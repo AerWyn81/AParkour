@@ -97,6 +97,7 @@ public class PlayerDataHandler {
 		data.setArmor(p.getInventory().getArmorContents());
 		data.setPotionEffects(p.getActivePotionEffects());
 		data.setLastGamemode(p.getGameMode());
+		data.setLeftHand(p.getInventory().getItemInOffHand());
 		data.setLastFlyMode(p.isFlying() || p.getAllowFlight());
 
 		for(PotionEffect effect : p.getActivePotionEffects()) {
@@ -123,6 +124,7 @@ public class PlayerDataHandler {
 		p.getInventory().setChestplate(data.getArmor()[2]);
 		p.getInventory().setLeggings(data.getArmor()[1]);
 		p.getInventory().setBoots(data.getArmor()[0]);
+		p.getInventory().setItemInOffHand(data.getLeftHand());
 
 		p.addPotionEffects(data.getPotionEffects());
 		if(data.getLastGamemode() != null) p.setGameMode(data.getLastGamemode());

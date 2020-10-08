@@ -34,7 +34,9 @@ GUIs:
   Titles:
     title: '%parkour% | Titles'
   Misc:
-      title: '%parkour% | Miscellaneous'
+    title: '%parkour% | Miscellaneous'
+  Confirmation:
+    title: '%parkour% | Confirmation'
 
 Times:
   Loading: '&cLoading...'
@@ -95,6 +97,9 @@ EndMessage:
   FirstTime: '&6You completed this parkour for the first time!'
   Normal: '&6You completed the parkour in &d%endTime%'
   Record: '&6You beat your previous best time by &d%recordTime%'
+
+RestartMessage:
+  Message: '&6Resetting parkour...'
 
 Titles:
   Start:

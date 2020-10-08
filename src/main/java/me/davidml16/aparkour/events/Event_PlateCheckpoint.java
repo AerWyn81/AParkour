@@ -4,6 +4,7 @@ import me.davidml16.aparkour.Main;
 import me.davidml16.aparkour.api.events.ParkourCheckpointEvent;
 import me.davidml16.aparkour.data.Parkour;
 import me.davidml16.aparkour.data.ParkourSession;
+import me.davidml16.aparkour.data.Plate;
 import me.davidml16.aparkour.utils.Sounds;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -47,9 +48,11 @@ public class Event_PlateCheckpoint implements Listener {
 								session.setLastCheckpoint(session.getLastCheckpoint() + 1);
 
 								Location loc = parkour.getCheckpointLocations().get(session.getLastCheckpoint()).clone();
+								Plate lastCheckpoint = session.getParkour().getCheckpoints().get(session.getLastCheckpoint());
+
 								loc.add(0.5D, 0D, 0.5D);
-								loc.setPitch(p.getLocation().getPitch());
-								loc.setYaw(p.getLocation().getYaw());
+								loc.setPitch(lastCheckpoint.getPlayerPitch());
+								loc.setYaw(lastCheckpoint.getPlayerYaw());
 								session.setLastCheckpointLocation(loc);
 
 								String message = main.getLanguageHandler().getMessage("Messages.Checkpoint");

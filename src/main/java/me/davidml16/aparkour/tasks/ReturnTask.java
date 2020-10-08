@@ -48,17 +48,21 @@ public class ReturnTask {
 
                                     if(main.isKickParkourOnFail()) {
                                         main.getParkourHandler().resetPlayer(p);
+                                        p.getLocation().setPitch(session.getParkour().getSpawn().getPitch());
+                                        p.getLocation().setYaw(session.getParkour().getSpawn().getYaw());
                                         p.teleport(session.getParkour().getSpawn());
                                     } else {
                                         Location loc = session.getParkour().getStart().getLocation().clone();
                                         loc.add(0.5, 0, 0.5);
-                                        loc.setPitch(p.getLocation().getPitch());
-                                        loc.setYaw(p.getLocation().getYaw());
+                                        p.getLocation().setPitch(loc.getPitch());
+                                        p.getLocation().setYaw(loc.getYaw());
                                         p.teleport(loc);
                                     }
 
                                     Bukkit.getPluginManager().callEvent(new ParkourReturnEvent(p, session.getParkour()));
                                 } else if (session.getLastCheckpoint() >= 0) {
+                                    p.getLocation().setPitch(session.getLastCheckpointLocation().getPitch());
+                                    p.getLocation().setYaw(session.getLastCheckpointLocation().getYaw());
                                     p.teleport(session.getLastCheckpointLocation());
 
                                     String message = main.getLanguageHandler().getMessage("Messages.ReturnCheckpoint");
@@ -78,6 +82,8 @@ public class ReturnTask {
                         if (main.getConfig().getBoolean("ReturnOnFly.Enabled")) {
                             Bukkit.getScheduler().scheduleSyncDelayedTask(main, () -> {
                                 if (main.getTimerManager().hasPlayerTimer(p)) {
+                                    p.getLocation().setPitch(session.getParkour().getSpawn().getPitch());
+                                    p.getLocation().setYaw(session.getParkour().getSpawn().getYaw());
                                     p.teleport(session.getParkour().getSpawn());
 
                                     String message = main.getLanguageHandler().getMessage("Messages.Fly");

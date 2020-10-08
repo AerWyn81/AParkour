@@ -11,6 +11,9 @@ public class Plate {
     private boolean hologramEnabled;
     private double hologramDistance;
 
+    private float playerPitch;
+    private float playerYaw;
+
     public Plate(Location location) {
         this.location = location;
         this.hologram = null;
@@ -48,6 +51,22 @@ public class Plate {
 
     public void setHologramDistance(double hologramDistance) {
         this.hologramDistance = hologramDistance;
+    }
+
+    public float getPlayerPitch() {
+        return playerPitch;
+    }
+
+    public void setPlayerPitch(float playerPitch) {
+        this.playerPitch = playerPitch;
+    }
+
+    public float getPlayerYaw() {
+        return playerYaw;
+    }
+
+    public void setPlayerYaw(float playerYaw) {
+        this.playerYaw = playerYaw;
     }
 
     @Override

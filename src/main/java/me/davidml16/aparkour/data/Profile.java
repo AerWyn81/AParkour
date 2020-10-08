@@ -6,9 +6,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.UUID;
 
-import javafx.util.Pair;
 import org.bukkit.GameMode;
-import org.bukkit.Location;
+import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
@@ -24,6 +23,7 @@ public class Profile {
 
 	private ItemStack[] inventory;
 	private ItemStack[] armor;
+	private ItemStack leftHand;
 
 	private GameMode lastGamemode;
 	private boolean lastFlyMode;
@@ -39,6 +39,7 @@ public class Profile {
 		this.uuid = uuid;
 		this.inventory = new ItemStack[36];
 		this.armor = new ItemStack[4];
+		this.leftHand = null;
 		this.potionEffects = null;
 		this.lastGamemode = null;
 		this.lastFlyMode = false;
@@ -93,9 +94,13 @@ public class Profile {
 		return time < bestTimes.get(parkour);
 	}
 
+	public ItemStack getLeftHand() { return leftHand; }
+
 	public ItemStack[] getInventory() {
 		return inventory;
 	}
+
+	public void setLeftHand(ItemStack leftHand) { this.leftHand = leftHand; }
 
 	public void setInventory(ItemStack[] inventory) {
 		this.inventory = inventory;
@@ -140,6 +145,7 @@ public class Profile {
 				", uuid=" + uuid +
 				", inventory=" + Arrays.toString(inventory) +
 				", armor=" + Arrays.toString(armor) +
+				", leftHand=" + leftHand +
 				", lastGamemode=" + lastGamemode +
 				", lastFlyMode=" + lastFlyMode +
 				", potionEffects=" + potionEffects +

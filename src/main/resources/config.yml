@@ -87,19 +87,19 @@ ReturnOnFall:
 ActionBarTimer:
     Enabled: true
 
-
 # PARKOUR ITEMS | IF YOU HAVE DISABLED, THE INVENTORY DON'T CLEAR
 Items:
     Enabled: true
     Restart:
-        ID: 166
+        MaterialName: 'BARRIER'
         Name: '&4&lRestart'
         Lore: '&7Return to the start of the course to start again!'
+        InventorySlot: 3
     Checkpoint:
-        ID: 148
+        MaterialName: 'IRON_PLATE'
         Name: '&a&lCheckpoint'
         Lore: '&7Return to your last checkpoint of the course!'
-
+        InventorySlot: 5
 
 # SOUNDS OF PARKOUR EVENTS
 Sounds:
@@ -128,3 +128,17 @@ Sounds:
         Sound: BAT_TAKEOFF
         Volume: 10
         Pitch: 2
+
+# CONFIRMATION MENU ON PARKOUR RESET
+GUIs:
+    ConfirmationOnReset:
+        Confirm:
+            MaterialName: 'CONCRETE:5'
+            Name: '&a&lConfirm'
+            Lore: '&7That will reset your progress !'
+            InventorySlot: 3
+        Cancel:
+            MaterialName: 'CONCRETE:14'
+            Name: '&c&lCancel'
+            Lore: '&7That will cancel and close this menu !'
+            InventorySlot: 5

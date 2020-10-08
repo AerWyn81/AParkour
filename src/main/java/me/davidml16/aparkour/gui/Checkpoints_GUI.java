@@ -132,6 +132,9 @@ public class Checkpoints_GUI implements Listener {
                                 ColorManager.translate(" &7Y: &6" + loc.getBlockY() + " "),
                                 ColorManager.translate(" &7Z: &6" + loc.getBlockZ() + " "),
                                 "",
+                                ColorManager.translate(" &7Pitch: &6" + String.format("%.02f", loc.getPitch()) + " "),
+                                ColorManager.translate(" &7Yaw: &6" + String.format("%.02f", loc.getYaw()) + " "),
+                                "",
                                 ColorManager.translate("&eClick to remove! ")).toItemStack());
                 iterator++;
             }

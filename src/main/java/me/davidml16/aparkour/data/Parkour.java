@@ -204,7 +204,9 @@ public class Parkour {
         if (config.contains("parkour.checkpoints")) {
             int iterator = 0;
             for (Plate checkpoint : checkpoints) {
-                config.set("parkour.checkpoints." + iterator, checkpoint.getLocation());
+                config.set("parkour.checkpoints." + iterator + ".location", checkpoint.getLocation());
+                config.set("parkour.checkpoints." + iterator + ".playerPitch", checkpoint.getPlayerPitch());
+                config.set("parkour.checkpoints." + iterator + ".playerYaw", checkpoint.getPlayerYaw());
                 iterator++;
             }
         }

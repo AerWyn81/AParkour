@@ -16,17 +16,17 @@ public class ParkourItems {
     }
 
     public void loadReturnItem() {
-        int id = main.getConfig().getInt("Items.Restart.ID");
+        String materialName = main.getConfig().getString("Items.Restart.MaterialName");
         String name = ColorManager.translate(main.getConfig().getString("Items.Restart.Name"));
         String lore = ColorManager.translate(main.getConfig().getString("Items.Restart.Lore"));
-        returnItem = new ItemBuilder(Material.getMaterial(id), 1).setName(name).setLore(lore).toItemStack();
+        returnItem = new ItemBuilder(Material.getMaterial(materialName), 1).setName(name).setLore(lore).toItemStack();
     }
 
     public void loadCheckpointItem() {
-        int id = main.getConfig().getInt("Items.Checkpoint.ID");
+        String materialName = main.getConfig().getString("Items.Checkpoint.MaterialName");
         String name = ColorManager.translate(main.getConfig().getString("Items.Checkpoint.Name"));
         String lore = ColorManager.translate(main.getConfig().getString("Items.Checkpoint.Lore"));
-        checkpointItem = new ItemBuilder(Material.getMaterial(id), 1).setName(name).setLore(lore).toItemStack();
+        checkpointItem = new ItemBuilder(Material.getMaterial(materialName), 1).setName(name).setLore(lore).toItemStack();
     }
 
     public ItemStack getRestartItem() {
@@ -36,5 +36,4 @@ public class ParkourItems {
     public ItemStack getCheckpointItem() {
         return checkpointItem;
     }
-
 }

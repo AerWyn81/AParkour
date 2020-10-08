@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Collections;
 
+import com.vomarek.hideitem.HideItem;
 import me.davidml16.aparkour.placeholders.PlaceholderHook;
 import me.davidml16.aparkour.api.ParkourAPI;
 import me.davidml16.aparkour.data.CommandBlocker;
@@ -46,6 +47,7 @@ public class Main extends JavaPlugin {
     private Titles_GUI titlesGUI;
     private Miscellaneous_GUI miscellaneousGUI;
     private PlayParkour_GUI playParkourGUI;
+    private Confirmation_GUI confirmationGUI;
 
     private HologramTask hologramTask;
     private ReturnTask returnTask;
@@ -99,8 +101,8 @@ public class Main extends JavaPlugin {
 
         hologramsEnabled = getConfig().getBoolean("Hologram.Enabled");
         if (isHologramsEnabled()) {
-            if (!Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays") || !Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
-                getLogger().severe("*** HolographicDisplays / ProtocolLib is not installed or not enabled. ***");
+            if (!Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays") || !Bukkit.getPluginManager().isPluginEnabled("ProtocolLib") || !Bukkit.getPluginManager().isPluginEnabled("HideItem")) {
+                getLogger().severe("*** HolographicDisplays / ProtocolLib / HideItem is not installed or not enabled. ***");
                 getLogger().severe("*** This plugin will be disabled. ***");
                 setEnabled(false);
                 return;
@@ -150,6 +152,9 @@ public class Main extends JavaPlugin {
         statsGUI = new PlayerStats_GUI(this);
 
         playParkourGUI = new PlayParkour_GUI(this);
+
+        confirmationGUI = new Confirmation_GUI(this);
+        confirmationGUI.loadGUI();
 
         configGUI = new MainConfig_GUI(this);
         configGUI.loadGUI();
@@ -227,7 +232,7 @@ public class Main extends JavaPlugin {
                     new UpdateChecker(this).getVersion(version -> {
                         Main.log.sendMessage(ColorManager.translate(""));
                         Main.log.sendMessage(ColorManager.translate("  &eAParkour checking updates:"));
-                        if (getDescription().getVersion().equalsIgnoreCase(version)) {
+                        if (!version.equals("3.5.3")) {
                             Main.log.sendMessage(ColorManager.translate("    &cNo update found!"));
                             Main.log.sendMessage(ColorManager.translate(""));
                         } else {
@@ -305,6 +310,8 @@ public class Main extends JavaPlugin {
     public Titles_GUI getTitlesGUI() { return titlesGUI; }
 
     public Miscellaneous_GUI getMiscellaneousGUI() { return miscellaneousGUI; }
+
+    public Confirmation_GUI getConfirmationGUI() {return confirmationGUI; }
 
     public TimerManager getTimerManager() {
         return timerManager;
@@ -396,6 +403,10 @@ public class Main extends JavaPlugin {
 
     public ParkourAPI getParkourAPI() { return parkourAPI; }
 
+    public HideItem getHideItem() {
+        return HideItem.getPlugin();
+    }
+
     private void registerCommands() {
         getCommand("aparkour").setExecutor(new Command_AParkour(this));
         getCommand("aparkour").setTabCompleter(new TabCompleter_AParkour(this));
@@ -413,7 +424,5 @@ public class Main extends JavaPlugin {
         if(!Bukkit.getBukkitVersion().contains("1.8")) {
             Bukkit.getPluginManager().registerEvents(new Event_Swap(this), this);
         }
-
     }
-
 }

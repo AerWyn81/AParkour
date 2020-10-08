@@ -6,7 +6,7 @@
 
     <groupId>me.davidml16</groupId>
     <artifactId>aparkour</artifactId>
-    <version>3.5.2</version>
+    <version>3.5.4</version>
     <packaging>jar</packaging>
 
     <name>AParkour</name>
@@ -43,6 +43,15 @@
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <outputDirectory>C:/Users/Vincent/Desktop/Jump/plugins</outputDirectory>
+                </configuration>
+            </plugin>
+
         </plugins>
         <resources>
             <resource>
@@ -73,7 +82,7 @@
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
+            <artifactId>spigot-api</artifactId>
             <version>1.12.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
@@ -99,6 +108,21 @@
             <artifactId>VaultAPI</artifactId>
             <version>1.7</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.1vomarek1</groupId>
+            <artifactId>HideItem</artifactId>
+            <version>3.0.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>2.0.1</version>
         </dependency>
     </dependencies>
 </project>

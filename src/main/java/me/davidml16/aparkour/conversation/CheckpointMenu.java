@@ -43,6 +43,9 @@ public class CheckpointMenu implements ConversationAbandonedListener, CommonProm
                     Location loc = player.getLocation().getBlock().getLocation();
                     if(!checkpointExist(parkour, loc)) {
                         Plate checkpoint = new Plate(loc);
+                        checkpoint.setPlayerPitch(player.getLocation().getPitch());
+                        checkpoint.setPlayerYaw(player.getLocation().getYaw());
+
                         parkour.getCheckpoints().add(checkpoint);
                         parkour.getCheckpointLocations().add(loc);
 

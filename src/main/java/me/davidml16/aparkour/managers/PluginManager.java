@@ -67,6 +67,8 @@ public class PluginManager {
         main.getTitlesGUI().reloadAllGUI();
         main.getMiscellaneousGUI().loadGUI();
         main.getMiscellaneousGUI().reloadAllGUI();
+        main.getConfirmationGUI().loadGUI();
+        main.getConfirmationGUI().reloadAllGUI();
         main.getParkourHandler().loadHolograms();
         main.getTopHologramManager().loadTopHolograms();
         main.getHologramTask().start();
