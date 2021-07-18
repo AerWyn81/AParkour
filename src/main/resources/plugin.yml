@@ -3,9 +3,52 @@ version: ${project.version}
 author: DavidML16
 main: me.davidml16.aparkour.Main
 load: POSTWORLD
-depend: [HolographicDisplays, ProtocolLib, HideItem]
+depend: [HolographicDisplays, ProtocolLib]
 softdepend: [PlaceholderAPI, Vault]
 commands:
     aparkour:
         description: Use this to see all commands.
-        aliases: [apk,pk]
+        aliases: [pk, parkour, dr, dropper]
+permissions:
+    aparkour.admin:
+        description: Gives access to everything!
+        default: op
+    aparkour.tab.admin:
+        description: Tab admin
+        default: op
+    aparkour.commands.checkpoint:
+        description: Return to previous checkpoint
+        default: not op
+    aparkour.tab.checkpoint:
+        description: Tab checkpoint
+        default: not op
+    aparkour.commands.leave:
+        description: Leave current parkours
+        default: not op
+    aparkour.tab.leave:
+        description: Tab leave
+        default: not op
+    aparkour.commands.stats:
+        description: Show player statistics
+        default: not op
+    aparkour.tab.stats:
+        description: Tab stats
+        default: not op
+    aparkour.commands.list:
+        description: Show list of parkours with ID
+        default: not op
+    aparkour.tab.list:
+        description: Tab list
+        default: not op
+    aparkour.commands.top:
+        description: Show best times
+        default: not op
+    aparkour.tab.top:
+        description: Tab top
+        default: not op
+    aparkour.commands.play:
+        description: Play parkour with ID
+        default: not op
+    aparkour.tab.play:
+        description: Tab play
+        default: not op

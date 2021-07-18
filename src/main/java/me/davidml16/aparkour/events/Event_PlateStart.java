@@ -1,9 +1,8 @@
 package me.davidml16.aparkour.events;
 
 import me.davidml16.aparkour.Main;
-import me.davidml16.aparkour.api.events.ParkourStartEvent;
 import me.davidml16.aparkour.data.Parkour;
-import me.davidml16.aparkour.data.ParkourSession;
+import me.davidml16.aparkour.handlers.ParkourHandler;
 import me.davidml16.aparkour.managers.ColorManager;
 import me.davidml16.aparkour.utils.Sounds;
 import org.bukkit.Bukkit;
@@ -14,10 +13,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -61,23 +58,25 @@ public class Event_PlateStart implements Listener {
                             }
                         }
 
-                        if (!ironPlateResetDenyCooldown.containsKey(p)) {
-                            ironPlateResetDenyCooldown.put(p, System.currentTimeMillis() + 1500);
+                        if (main.getConfig().getBoolean("AutoRestart.Enabled")) {
+                            if (!ironPlateResetDenyCooldown.containsKey(p)) {
+                                ironPlateResetDenyCooldown.put(p, System.currentTimeMillis() + 1500);
 
-                            if (main.getTimerManager().hasPlayerTimer(p)) {
-                                String resetting = main.getLanguageHandler().getMessage("RestartMessage.Message");
-                                if(resetting.length() > 0)
-                                    p.sendMessage(ChatColor.translateAlternateColorCodes('&', resetting));
+                                if (main.getTimerManager().hasPlayerTimer(p)) {
+                                    String resetting = main.getLanguageHandler().getMessage("RestartMessage.Message");
+                                    if(resetting.length() > 0)
+                                        p.sendMessage(ChatColor.translateAlternateColorCodes('&', resetting));
 
-                                main.getParkourHandler().resetPlayer(p);
-                            }
+                                    main.getParkourHandler().resetPlayer(p);
+                                }
 
-                            startParkour(p, parkour);
-                        } else {
-                            if (ironPlateResetDenyCooldown.get(p) <= System.currentTimeMillis()) {
-                                ironPlateResetDenyCooldown.remove(p);
+                                ParkourHandler.startParkour(null, p, parkour, false);
                             } else {
-                                e.setCancelled(true);
+                                if (ironPlateResetDenyCooldown.get(p) <= System.currentTimeMillis()) {
+                                    ironPlateResetDenyCooldown.remove(p);
+                                } else {
+                                    e.setCancelled(true);
+                                }
                             }
                         }
                     }
@@ -85,56 +84,4 @@ public class Event_PlateStart implements Listener {
             }
         }
     }
-
-    private void startParkour(Player p, Parkour parkour) {
-        String message = main.getLanguageHandler().getMessage("Messages.Started");
-        if(message.length() > 0)
-            p.sendMessage(message);
-
-        main.getSoundUtil().playStart(p);
-
-        if (main.isParkourItemsEnabled()) {
-            main.getPlayerDataHandler().savePlayerInventory(p);
-            if (parkour.getCheckpoints().size() > 0) {
-                p.getInventory().setItem(main.getConfig().getInt("Items.Restart.InventorySlot"), main.getParkourItems().getRestartItem());
-                p.getInventory().setItem(main.getConfig().getInt("Items.Checkpoint.InventorySlot"), main.getParkourItems().getCheckpointItem());
-
-                String state = main.getHideItem().getPlayerState().getPlayerState(p);
-                boolean hasHiddenPlayers;
-
-                if (Arrays.asList("hidden", "shown").contains(state)) {
-                    hasHiddenPlayers = state.equalsIgnoreCase("hidden");
-                } else {
-                    hasHiddenPlayers = !main.getHideItem().getHideItemConfig().DEFAULT_SHOWN();
-                }
-
-                final ItemStack hideItem;
-
-                if (hasHiddenPlayers) {
-                    hideItem = main.getHideItem().getHideItemConfig().SHOW_ITEM();
-                } else {
-                    hideItem = main.getHideItem().getHideItemConfig().HIDE_ITEM();
-                }
-
-                if (hasHiddenPlayers) {
-                    main.getHideItem().getPlayerState().setPlayerState(p, "hidden");
-                }
-
-                if (!main.getHideItem().getHideItemConfig().DISABLE_ITEMS()) {
-                    p.getInventory().setItem(main.getHideItem().getHideItemConfig().ITEM_SLOT() - 1, hideItem);
-                }
-            } else {
-                p.getInventory().setItem(main.getConfig().getInt("Items.Restart.InventorySlot"), main.getParkourItems().getRestartItem());
-            }
-        }
-
-        p.setFlying(false);
-
-        main.getTitleUtil().sendStartTitle(p, parkour);
-
-        main.getSessionHandler().createSession(p, parkour);
-
-        Bukkit.getPluginManager().callEvent(new ParkourStartEvent(p, parkour));
-    }
-
 }

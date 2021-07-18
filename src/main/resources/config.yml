@@ -82,10 +82,16 @@ ReturnOnFall:
     Enabled: false
     BlocksDistance: 5
 
-
 # ACTION BAR TIMER WHILE PLAYING PARKOUR
 ActionBarTimer:
     Enabled: true
+
+# ENABLE AUTO RESTART
+AutoRestart:
+    Enabled: true
+
+# HIDE ITEM COOLDOWN (-1 to disable)
+HideItemCooldown: -1
 
 # PARKOUR ITEMS | IF YOU HAVE DISABLED, THE INVENTORY DON'T CLEAR
 Items:
@@ -95,11 +101,28 @@ Items:
         Name: '&4&lRestart'
         Lore: '&7Return to the start of the course to start again!'
         InventorySlot: 3
+        Display: true
     Checkpoint:
         MaterialName: 'IRON_PLATE'
         Name: '&a&lCheckpoint'
         Lore: '&7Return to your last checkpoint of the course!'
         InventorySlot: 5
+        Display: true
+    HideItem:
+        Display: true
+        InventorySlot: 9
+        Show:
+            MaterialName: 'INK_SACK:8'
+            Enchanted: true
+            Name: '&eHide Players &7(Hidden)'
+            Lore:
+                - '&aClick &7to show players'
+        Hide:
+            MaterialName: 'INK_SACK:10'
+            Enchanted: true
+            Name: '&eHide Players &7(Shown)'
+            Lore:
+                - '&aClick &7to hide players'
 
 # SOUNDS OF PARKOUR EVENTS
 Sounds:

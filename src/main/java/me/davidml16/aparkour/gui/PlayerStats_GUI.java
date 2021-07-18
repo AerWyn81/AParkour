@@ -52,58 +52,58 @@ public class PlayerStats_GUI implements Listener {
 			return;
 		}
 
-		Inventory gui = Bukkit.createInventory(null, 45, main.getLanguageHandler().getMessage("GUIs.Stats.title"));
+		Inventory gui = Bukkit.createInventory(null, 45, ColorManager.translate(main.getLanguageHandler().getMessage("GUIs.Stats.title")));
 
 		ItemStack edge = new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 7).setName("").toItemStack();
-		ItemStack book = new ItemBuilder(Material.BOOK, 1).setName(ColorManager.translate("&a&l" + p.getName() + "'s statistics")).toItemStack();
+		ItemStack book = new ItemBuilder(Material.BOOK, 1).setName(ColorManager.translate(main.getLanguageHandler().getMessage("GUIs.Stats.playerStats").replaceAll("%player%", p.getName()))).toItemStack();
 
 		for (Integer i : borders) {
 			gui.setItem(i, edge);
 		}
 
 		if (page > 0) {
-			gui.setItem(18, new ItemBuilder(Material.ENDER_PEARL, 1).setName(ColorManager.translate("&aPrevious page")).toItemStack());
+			gui.setItem(18, new ItemBuilder(Material.ENDER_PEARL, 1).setName(ColorManager.translate(main.getLanguageHandler().getMessage("GUIs.Layout.Previous"))).toItemStack());
 		} else {
 			gui.setItem(18, new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 7).setName("").toItemStack());
 		}
 
 		if (parkours.size() > (page + 1) * 21) {
-			gui.setItem(26, new ItemBuilder(Material.ENDER_PEARL, 1).setName(ColorManager.translate("&aNext page")).toItemStack());
+			gui.setItem(26, new ItemBuilder(Material.ENDER_PEARL, 1).setName(ColorManager.translate(main.getLanguageHandler().getMessage("GUIs.Layout.Next"))).toItemStack());
 		} else {
 			gui.setItem(26, new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 7).setName("").toItemStack());
 		}
 
 		gui.setItem(4, book);
 
-		if (parkours.size() > 21) parkours = parkours.subList(page * 21, ((page * 21) + 21) > parkours.size() ? parkours.size() : (page * 21) + 21);
+		if (parkours.size() > 21) parkours = parkours.subList(page * 21, Math.min(((page * 21) + 21), parkours.size()));
 
 		if(parkours.size() > 0) {
 			for (Parkour parkour : parkours) {
 				List<String> lore = new ArrayList<String>();
 				lore.add(" ");
 
-				lore.add(ColorManager.translate("  &fYour Last Time  "));
+				lore.add(ColorManager.translate(main.getLanguageHandler().getMessage("GUIs.Stats.lastTime")));
 				if (main.getPlayerDataHandler().getData(p).getLastTimes().get(parkour.getId()) > 0)
-					lore.add(ColorManager.translate("    &e" + main.getTimerManager().millisToString(main.getLanguageHandler().getMessage("Timer.Formats.ParkourTimer"), main.getPlayerDataHandler().getData(p).getLastTimes().get(parkour.getId())) + "  "));
+					lore.add(ColorManager.translate(main.getLanguageHandler().getMessage("GUIs.Stats.lastTimeValue").replaceAll("%lastTime%", main.getTimerManager().millisToString(main.getLanguageHandler().getMessage("Timer.Formats.ParkourTimer"), main.getPlayerDataHandler().getData(p).getLastTimes().get(parkour.getId())))));
 				else
-					lore.add(ColorManager.translate("    &eNone  "));
+					lore.add(ColorManager.translate(main.getLanguageHandler().getMessage("GUIs.Stats.none")));
 
 				lore.add(" ");
 
-				lore.add(ColorManager.translate("  &fYour Record Time  "));
+				lore.add(ColorManager.translate(main.getLanguageHandler().getMessage("GUIs.Stats.recordTime")));
 				if (main.getPlayerDataHandler().getData(p).getBestTimes().get(parkour.getId()) > 0)
-					lore.add(ColorManager.translate("    &e" + main.getTimerManager().millisToString(main.getLanguageHandler().getMessage("Timer.Formats.ParkourTimer"), main.getPlayerDataHandler().getData(p).getBestTimes().get(parkour.getId())) + "  "));
+					lore.add(ColorManager.translate(main.getLanguageHandler().getMessage("GUIs.Stats.recordTimeValue").replaceAll("%recordTime%", main.getTimerManager().millisToString(main.getLanguageHandler().getMessage("Timer.Formats.ParkourTimer"), main.getPlayerDataHandler().getData(p).getBestTimes().get(parkour.getId())))));
 				else
-					lore.add(ColorManager.translate("    &eNone  "));
+					lore.add(ColorManager.translate(main.getLanguageHandler().getMessage("GUIs.Stats.none")));
 
 				List<LeaderboardEntry> leaderboard = main.getLeaderboardHandler().getLeaderboard(parkour.getId());
 
 				if (leaderboard.size() > 0) {
 					lore.add("");
-					lore.add(ColorManager.translate("  &fWorld records  "));
+					lore.add(ColorManager.translate(main.getLanguageHandler().getMessage("GUIs.Stats.worldRecords")));
 					int i = 0;
 					for (LeaderboardEntry entry : leaderboard) {
-						lore.add(ColorManager.translate("    &7" + entry.getName() + " &f- &c" + main.getTimerManager().millisToString(main.getLanguageHandler().getMessage("Timer.Formats.ParkourTimer"), entry.getTime()) + "  "));
+						lore.add(ColorManager.translate(main.getLanguageHandler().getMessage("GUIs.Stats.worldRecordsValue").replaceAll("%playerName%", entry.getName()).replaceAll("%playerTime%", main.getTimerManager().millisToString(main.getLanguageHandler().getMessage("Timer.Formats.ParkourTimer"), entry.getTime()))));
 						if (i == 2) break;
 						i++;
 					}
@@ -111,7 +111,7 @@ public class PlayerStats_GUI implements Listener {
 
 				lore.add("");
 
-				gui.addItem(new ItemBuilder(parkour.getIcon()).setName(ColorManager.translate("&a&l" + parkour.getName())).setLore(lore).toItemStack());
+				gui.addItem(new ItemBuilder(parkour.getIcon()).setName(ColorManager.translate(main.getLanguageHandler().getMessage("GUIs.Stats.parkourName").replaceAll("%parkourName%", parkour.getName()))).setLore(lore).toItemStack());
 			}
 		} else {
 			gui.setItem(22, new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 14).setName(ColorManager.translate("&c")).toItemStack());

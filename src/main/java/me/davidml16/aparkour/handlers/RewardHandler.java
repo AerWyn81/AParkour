@@ -86,5 +86,4 @@ public class RewardHandler {
 			}
 		}, 1L);
 	}
-
 }

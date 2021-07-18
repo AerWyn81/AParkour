@@ -22,6 +22,9 @@ public class ParkourSession {
     private Integer lastCheckpoint;
     private Location lastCheckpointLocation;
 
+    private Integer nextCheckpoint;
+    private Location nextCheckpointLocation;
+
     private long startTime;
 
     private int taskId = 0;
@@ -32,6 +35,8 @@ public class ParkourSession {
         this.parkour = parkour;
         this.lastCheckpoint = -1;
         this.lastCheckpointLocation = null;
+        this.nextCheckpoint = -1;
+        this.nextCheckpointLocation = null;
         this.parkour.getPlaying().add(player.getUniqueId());
         startTimer();
     }
@@ -57,6 +62,22 @@ public class ParkourSession {
     }
 
     public void setLastCheckpointLocation(Location lastCheckpointLocation) { this.lastCheckpointLocation = lastCheckpointLocation; }
+
+    public Integer getNextCheckpoint() {
+        return nextCheckpoint;
+    }
+
+    public void setNextCheckpoint(Integer nextCheckpoint) {
+        this.nextCheckpoint = nextCheckpoint;
+    }
+
+    public Location getNextCheckpointLocation() {
+        return nextCheckpointLocation;
+    }
+
+    public void setNextCheckpointLocation(Location nextCheckpointLocation) {
+        this.nextCheckpointLocation = nextCheckpointLocation;
+    }
 
     public long getStartTime() { return startTime; }
 

@@ -33,6 +33,8 @@ public class PluginManager {
         if (main.isParkourItemsEnabled()) {
             main.getParkourItems().loadReturnItem();
             main.getParkourItems().loadCheckpointItem();
+            main.getParkourItems().loadHideItem();
+            main.getParkourItems().loadShowItem();
         }
 
         removePlayersFromParkour();

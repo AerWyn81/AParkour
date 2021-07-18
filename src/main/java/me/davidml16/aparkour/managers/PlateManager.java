@@ -8,8 +8,8 @@ import org.bukkit.block.Block;
 public class PlateManager {
 
     public void loadPlates(Parkour parkour) {
-        Block start = parkour.getStart().getLocation().getWorld().getBlockAt(parkour.getStart().getLocation());
         try {
+            Block start = parkour.getStart().getLocation().getWorld().getBlockAt(parkour.getStart().getLocation());
             if (start.getType() != Material.IRON_PLATE) {
                 start.setType(Material.IRON_PLATE);
             }

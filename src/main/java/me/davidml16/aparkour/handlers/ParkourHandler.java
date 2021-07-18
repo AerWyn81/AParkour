@@ -2,19 +2,17 @@ package me.davidml16.aparkour.handlers;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
+import me.davidml16.aparkour.api.events.ParkourEndEvent;
+import me.davidml16.aparkour.api.events.ParkourStartEvent;
 import me.davidml16.aparkour.data.*;
 import me.davidml16.aparkour.utils.ItemBuilder;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import me.davidml16.aparkour.utils.RandomFirework;
+import org.bukkit.*;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -32,10 +30,12 @@ public class ParkourHandler {
 
 	private GameMode parkourGamemode;
 
-	private Main main;
+	private static Main main;
+	private static FileConfiguration config;
 
 	public ParkourHandler(Main main) {
 		this.main = main;
+		this.config = main.getConfig();
 		this.parkours = new HashMap<String, Parkour>();
 		this.parkourFiles = new HashMap<String, File>();
 		this.parkourConfigs = new HashMap<String, YamlConfiguration>();
@@ -494,9 +494,7 @@ public class ParkourHandler {
 	}
 
 	public boolean validParkourData(YamlConfiguration config) {
-		return config.contains("parkour.spawn")
-				&& config.contains("parkour.start")
-				&& config.contains("parkour.end");
+		return config.contains("parkour.spawn") && config.contains("parkour.start") && config.contains("parkour.end");
 	}
 
 	private boolean validRewardData(String parkourID, String rewardID) {
@@ -523,4 +521,130 @@ public class ParkourHandler {
 		}
 	}
 
+	public static void startParkour(CommandSender sender, Player p, Parkour parkour, boolean forceSpawnTp) {
+		String message = main.getLanguageHandler().getMessage("Messages.Started");
+		if(message.length() > 0)
+			p.sendMessage(message);
+
+		if (sender instanceof Player && !sender.getName().equalsIgnoreCase(p.getName())) {
+			message = main.getLanguageHandler().getMessage("Messages.StartedForPlayer").replaceAll("%player%", p.getName());
+			if(message.length() > 0) {
+				sender.sendMessage((message));
+			}
+		}
+
+		main.getSoundUtil().playStart(p);
+
+		if (main.isParkourItemsEnabled()) {
+			main.getPlayerDataHandler().savePlayerInventory(p);
+
+			if (config.getBoolean("Items.HideItem.Display")) {
+				p.getInventory().setItem(main.getConfig().getInt("Items.HideItem.InventorySlot") - 1, main.getHidePlayerManager().getItem(p));
+			}
+
+			if (parkour.getCheckpoints().size() > 0) {
+				if (main.getConfig().getBoolean("Items.Restart.Display")) {
+					p.getInventory().setItem(main.getConfig().getInt("Items.Restart.InventorySlot"), main.getParkourItems().getRestartItem());
+				}
+
+				if (main.getConfig().getBoolean("Items.Checkpoint.Display")) {
+					p.getInventory().setItem(main.getConfig().getInt("Items.Checkpoint.InventorySlot"), main.getParkourItems().getCheckpointItem());
+				}
+			} else {
+				if (main.getConfig().getBoolean("Items.Restart.Display")) {
+					p.getInventory().setItem(main.getConfig().getInt("Items.Restart.InventorySlot"), main.getParkourItems().getRestartItem());
+				}
+			}
+		}
+
+		p.setFlying(false);
+
+		main.getTitleUtil().sendStartTitle(p, parkour);
+
+		main.getSessionHandler().createSession(p, parkour);
+
+		if (main.getSessionHandler().getSession(p).getParkour().getCheckpoints().size() > 0) {
+			main.getSessionHandler().getSession(p).setNextCheckpointLocation(main.getSessionHandler().getSession(p).getParkour().getCheckpoints().get(main.getSessionHandler().getSession(p).getLastCheckpoint() + 1).getLocation());
+		}
+
+		if (forceSpawnTp) {
+			p.teleport(main.getParkourHandler().getParkourById(parkour.getId()).getStart().getLocation());
+		}
+
+		Bukkit.getPluginManager().callEvent(new ParkourStartEvent(p, parkour));
+	}
+
+	public static void finishParkour(CommandSender sender, Player p) {
+		ParkourSession session = main.getSessionHandler().getSession(p);
+		Profile profile = main.getPlayerDataHandler().getData(p);
+		Parkour parkour = session.getParkour();
+
+		if (parkour == null) {
+			return;
+		}
+
+		long total = session.getLiveTime();
+
+		main.getSoundUtil().playEnd(p);
+
+		main.getTitleUtil().sendEndTitle(p, parkour);
+
+		String end = main.getLanguageHandler().getMessage("EndMessage.Normal");
+		if(end.length() > 0)
+			p.sendMessage(ChatColor.translateAlternateColorCodes('&', end)
+					.replaceAll("%endTime%", main.getTimerManager().millisToString(main.getLanguageHandler().getMessage("Timer.Formats.ParkourTimer"),total)));
+
+		if (sender instanceof Player && !sender.getName().equalsIgnoreCase(p.getName())) {
+			end = main.getLanguageHandler().getMessage("EndMessage.EndForPlayer").replaceAll("%player%", p.getName());
+			if(end.length() > 0) {
+				sender.sendMessage((end));
+			}
+		}
+
+		if (profile.getBestTimes().get(parkour.getId()) == 0 && profile.getLastTimes().get(parkour.getId()) == 0) {
+			String message = main.getLanguageHandler().getMessage("EndMessage.FirstTime");
+			if(message.length() > 0)
+				p.sendMessage(message);
+			main.getRewardHandler().giveParkourRewards(p, parkour.getId(), true);
+		}
+
+		profile.setLastTime(total, parkour.getId());
+		if (profile.getBestTimes().get(parkour.getId()) == 0) {
+			profile.setBestTime(total, parkour.getId());
+		}
+
+		if (main.getHidePlayerManager().getPlayerState(p) == PlayerState.HIDDEN) {
+			main.getHidePlayerManager().setPlayerState(p, PlayerState.SHOWN);
+		}
+
+		main.getParkourHandler().resetPlayer(p);
+
+		main.getRewardHandler().giveParkourRewards(p, parkour.getId(), false);
+
+		if (main.getConfig().getBoolean("TpToParkourSpawn.Enabled")) {
+			p.teleport(parkour.getSpawn());
+		}
+
+		if (main.getConfig().getBoolean("Firework.Enabled")) {
+			RandomFirework.launchRandomFirework(p.getLocation());
+		}
+
+		if (profile.isBestTime(total, parkour.getId())) {
+			long bestTotal = profile.getBestTimes().get(parkour.getId()) - total;
+
+			String record = main.getLanguageHandler().getMessage("EndMessage.Record");
+
+			profile.setBestTime(total, parkour.getId());
+
+			if(record.length() > 0)
+				p.sendMessage(ChatColor.translateAlternateColorCodes('&', record)
+						.replaceAll("%recordTime%", main.getTimerManager().millisToString(main.getLanguageHandler().getMessage("Timer.Formats.ParkourTimer"),bestTotal)));
+		}
+
+		profile.save(parkour.getId());
+
+		main.getStatsHologramManager().reloadStatsHologram(p, parkour.getId());
+
+		Bukkit.getPluginManager().callEvent(new ParkourEndEvent(p, parkour));
+	}
 }

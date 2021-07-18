@@ -3,8 +3,11 @@ package me.davidml16.aparkour.data;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import org.bukkit.Location;
 
+import java.util.List;
+
 public class Plate {
 
+    private int id;
     private Location location;
 
     private Hologram hologram;
@@ -14,11 +17,21 @@ public class Plate {
     private float playerPitch;
     private float playerYaw;
 
+    private List<String> checkpointCommands;
+
     public Plate(Location location) {
         this.location = location;
         this.hologram = null;
         this.hologramEnabled = false;
         this.hologramDistance = 2.5;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Location getLocation() {
@@ -67,6 +80,12 @@ public class Plate {
 
     public void setPlayerYaw(float playerYaw) {
         this.playerYaw = playerYaw;
+    }
+
+    public List<String> getCheckpointCommands() { return checkpointCommands; }
+
+    public void setCheckpointCommands(List<String> checkpointCommands) {
+        this.checkpointCommands = checkpointCommands;
     }
 
     @Override

@@ -33,15 +33,33 @@ public class TabCompleter_AParkour implements TabCompleter {
 
 		if (args.length == 1) {
 
-			if(main.isJoinByGUI())
-				list.add("play");
+			list.add("help");
 
-			list.add("stats");
-			list.add("top");
-			list.add("list");
-			list.add("leave");
-			list.add("checkpoint");
-			if (main.getPlayerDataHandler().playerHasPermission(p, "aparkour.admin")) {
+			if(main.isJoinByGUI() && main.getPlayerDataHandler().playerHasPermission(p, "aparkour.tab.play")) {
+				list.add("play");
+			}
+
+			if (main.getTimerManager().hasPlayerTimer(p)) {
+				list.add("leave");
+				if (main.getPlayerDataHandler().playerHasPermission(p, "aparkour.tab.checkpoint")) {
+					list.add("checkpoint");
+				}
+			}
+
+			if (main.getPlayerDataHandler().playerHasPermission(p, "aparkour.tab.stats")) {
+				list.add("stats");
+			}
+			if (main.getPlayerDataHandler().playerHasPermission(p, "aparkour.tab.top")) {
+				list.add("top");
+			}
+			if (main.getPlayerDataHandler().playerHasPermission(p, "aparkour.tab.list")) {
+				list.add("list");
+			}
+
+			if (main.getPlayerDataHandler().playerHasPermission(p, "aparkour.tab.admin")) {
+				list.add("start");
+				list.add("checkpoint");
+				list.add("finish");
 				list.add("create");
 				list.add("remove");
 				list.add("setup");
@@ -62,7 +80,7 @@ public class TabCompleter_AParkour implements TabCompleter {
 			}
 		} else if (args[0].equalsIgnoreCase("play") || args[0].equalsIgnoreCase("top")) {
 				list.addAll(main.getParkourHandler().getParkours().keySet());
-		} else if (args[0].equalsIgnoreCase("reset")) {
+		} else if (args[0].equalsIgnoreCase("reset") || args[0].equalsIgnoreCase("start")) {
 			if (args.length == 2) {
 				if (main.getPlayerDataHandler().playerHasPermission(p, "aparkour.admin")) {
 					for (Player target : main.getServer().getOnlinePlayers()) {
@@ -72,6 +90,19 @@ public class TabCompleter_AParkour implements TabCompleter {
 			} else {
 				if (main.getPlayerDataHandler().playerHasPermission(p, "aparkour.admin")) {
 					list.addAll(main.getParkourHandler().getParkours().keySet());
+				}
+			}
+		} else if (args[0].equalsIgnoreCase("finish")) {
+			if (main.getPlayerDataHandler().playerHasPermission(p, "aparkour.admin")) {
+				for (Player target : main.getServer().getOnlinePlayers()) {
+					list.add(target.getName());
+				}
+			}
+		} else if (args[0].equalsIgnoreCase("checkpoint")) {
+			if (args.length == 3) {
+				if (main.getPlayerDataHandler().playerHasPermission(p, "aparkour.admin")) {
+					list.add("next");
+					list.add("previous");
 				}
 			}
 		}
@@ -85,5 +116,4 @@ public class TabCompleter_AParkour implements TabCompleter {
 
 		return auto.isEmpty() ? list : auto;
 	}
-
 }

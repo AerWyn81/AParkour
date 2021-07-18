@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Collections;
 
-import com.vomarek.hideitem.HideItem;
 import me.davidml16.aparkour.placeholders.PlaceholderHook;
 import me.davidml16.aparkour.api.ParkourAPI;
 import me.davidml16.aparkour.data.CommandBlocker;
@@ -57,6 +56,7 @@ public class Main extends JavaPlugin {
     private TopHologramManager topHologramManager;
     private PlateManager plateManager;
     private PluginManager pluginManager;
+    private HidePlayerManager hidePlayerManager;
 
     private ParkourHandler parkourHandler;
     private RewardHandler rewardHandler;
@@ -101,8 +101,8 @@ public class Main extends JavaPlugin {
 
         hologramsEnabled = getConfig().getBoolean("Hologram.Enabled");
         if (isHologramsEnabled()) {
-            if (!Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays") || !Bukkit.getPluginManager().isPluginEnabled("ProtocolLib") || !Bukkit.getPluginManager().isPluginEnabled("HideItem")) {
-                getLogger().severe("*** HolographicDisplays / ProtocolLib / HideItem is not installed or not enabled. ***");
+            if (!Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays") || !Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
+                getLogger().severe("*** HolographicDisplays / ProtocolLib is not installed or not enabled. ***");
                 getLogger().severe("*** This plugin will be disabled. ***");
                 setEnabled(false);
                 return;
@@ -114,6 +114,8 @@ public class Main extends JavaPlugin {
         if (parkourItemsEnabled) {
             parkourItems.loadReturnItem();
             parkourItems.loadCheckpointItem();
+            parkourItems.loadHideItem();
+            parkourItems.loadShowItem();
         }
 
         kickParkourOnFail = getConfig().getBoolean("KickParkourOnFail.Enabled");
@@ -124,8 +126,9 @@ public class Main extends JavaPlugin {
         languageHandler.pushMessages();
 
         statsHologramManager = new StatsHologramManager(this);
+        hidePlayerManager = new HidePlayerManager(this, isVersionLegacy());
 
-        checkpointsHandler = new CheckpointsHandler();
+        checkpointsHandler = new CheckpointsHandler(this);
 
         plateManager = new PlateManager();
 
@@ -232,7 +235,7 @@ public class Main extends JavaPlugin {
                     new UpdateChecker(this).getVersion(version -> {
                         Main.log.sendMessage(ColorManager.translate(""));
                         Main.log.sendMessage(ColorManager.translate("  &eAParkour checking updates:"));
-                        if (!version.equals("3.5.3")) {
+                        if (getDescription().getVersion().equalsIgnoreCase(version)) {
                             Main.log.sendMessage(ColorManager.translate("    &cNo update found!"));
                             Main.log.sendMessage(ColorManager.translate(""));
                         } else {
@@ -256,7 +259,8 @@ public class Main extends JavaPlugin {
         log.sendMessage(ColorManager.translate("    &aAuthor: &b" + pdf.getAuthors().get(0)));
         log.sendMessage("");
 
-        pluginManager.removePlayersFromParkour();
+        if (pluginManager != null)
+            pluginManager.removePlayersFromParkour();
 
         if(isHologramsEnabled()) {
             for (Hologram hologram : HologramsAPI.getHolograms(this)) {
@@ -275,6 +279,11 @@ public class Main extends JavaPlugin {
         } catch (NullPointerException e) {
             chat = null;
         }
+    }
+
+    public boolean isVersionLegacy() {
+        int version = Integer.parseInt(Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3].replaceAll("[^\\d.]", ""));
+        return version < 112;
     }
 
     public Chat getChat() { return chat; }
@@ -403,9 +412,7 @@ public class Main extends JavaPlugin {
 
     public ParkourAPI getParkourAPI() { return parkourAPI; }
 
-    public HideItem getHideItem() {
-        return HideItem.getPlugin();
-    }
+    public HidePlayerManager getHidePlayerManager() { return hidePlayerManager; }
 
     private void registerCommands() {
         getCommand("aparkour").setExecutor(new Command_AParkour(this));

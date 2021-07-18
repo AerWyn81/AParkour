@@ -36,11 +36,13 @@ public class StatsHologramManager {
 				List<String> lines = new ArrayList<String>();
 				lines.add(main.getLanguageHandler().getMessage("Holograms.Stats.Line1"));
 				lines.add(main.getLanguageHandler().getMessage("Holograms.Stats.Line2"));
+				lines.add(main.getLanguageHandler().getMessage("Holograms.Stats.Line3"));
+				lines.add(main.getLanguageHandler().getMessage("Holograms.Stats.Line4"));
 
 				for(int i = 0; i < lines.size(); i++) {
 					lines.set(i, lines.get(i).replaceAll("%player%", main.getPlayerDataHandler().getPlayerName(p.getWorld(), p.getName()))
 							.replaceAll("%time%", ColorManager.translate(main.getLanguageHandler().getMessage("Times.Loading")))
-							.replaceAll("%parkour%", parkour.getName()));
+							.replaceAll("%parkour%", ColorManager.translate(parkour.getName())));
 				}
 
 				Hologram hologram = HologramsAPI.createHologram(main, parkour.getStatsHologram().clone().add(0.5D, 2.0D, 0.5D));
@@ -51,6 +53,8 @@ public class StatsHologramManager {
 
 				hologram.insertTextLine(0, lines.get(0));
 				hologram.insertTextLine(1, lines.get(1));
+				hologram.insertTextLine(2, lines.get(2));
+				hologram.insertTextLine(3, lines.get(3));
 
 				main.getPlayerDataHandler().getData(p).getHolograms().put(parkour.getId(), hologram);
 			}
@@ -80,6 +84,8 @@ public class StatsHologramManager {
 
 				((TextLine) hologram.getLine(0)).setText(lines.get(0));
 				((TextLine) hologram.getLine(1)).setText(lines.get(1));
+				((TextLine) hologram.getLine(2)).setText(lines.get(2));
+				((TextLine) hologram.getLine(3)).setText(lines.get(3));
 			}
 		}
 	}
@@ -99,18 +105,20 @@ public class StatsHologramManager {
 		String NoBestTime = main.getLanguageHandler().getMessage("Times.NoBestTime");
 		lines.add(main.getLanguageHandler().getMessage("Holograms.Stats.Line1"));
 		lines.add(main.getLanguageHandler().getMessage("Holograms.Stats.Line2"));
-		
+		lines.add(main.getLanguageHandler().getMessage("Holograms.Stats.Line3"));
+		lines.add(main.getLanguageHandler().getMessage("Holograms.Stats.Line4"));
+
 		if (bestTime != 0) {
 			for(int i = 0; i < lines.size(); i++) {
 				lines.set(i, lines.get(i).replaceAll("%player%", main.getPlayerDataHandler().getPlayerName(p.getWorld(), p.getName()))
 						.replaceAll("%time%", main.getTimerManager().millisToString(main.getLanguageHandler().getMessage("Timer.Formats.ParkourTimer"),bestTime))
-						.replaceAll("%parkour%", parkour.getName()));
+						.replaceAll("%parkour%", ColorManager.translate(parkour.getName())));
 			}
 		} else {
 			for(int i = 0; i < lines.size(); i++) {
 				lines.set(i, lines.get(i).replaceAll("%player%", main.getPlayerDataHandler().getPlayerName(p.getWorld(), p.getName()))
 						.replaceAll("%time%", NoBestTime)
-						.replaceAll("%parkour%", parkour.getName()));
+						.replaceAll("%parkour%", ColorManager.translate(parkour.getName())));
 			}
 		}
 

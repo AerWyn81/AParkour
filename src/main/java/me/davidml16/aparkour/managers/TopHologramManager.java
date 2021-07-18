@@ -81,9 +81,9 @@ public class TopHologramManager {
                         Hologram header = HologramsAPI.createHologram(main,
                                 parkour.getTopHologram().clone().add(0.5D, 4.5D, 0.5D));
                         header.appendTextLine(main.getLanguageHandler()
-                                .getMessage("Holograms.Top.Header.Line1").replaceAll("%parkour%", parkour.getName()));
+                                .getMessage("Holograms.Top.Header.Line1").replaceAll("%parkour%", ColorManager.translate(parkour.getName())));
                         header.appendTextLine(main.getLanguageHandler()
-                                .getMessage("Holograms.Top.Header.Line2").replaceAll("%parkour%", parkour.getName()));
+                                .getMessage("Holograms.Top.Header.Line2").replaceAll("%parkour%", ColorManager.translate(parkour.getName())));
 
                         Hologram body = HologramsAPI.createHologram(main,
                                 parkour.getTopHologram().clone().add(0.5D, 3.75D, 0.5D));

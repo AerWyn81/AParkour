@@ -5,9 +5,9 @@ import me.davidml16.aparkour.api.events.ParkourEndEvent;
 import me.davidml16.aparkour.data.Parkour;
 import me.davidml16.aparkour.data.ParkourSession;
 import me.davidml16.aparkour.data.Profile;
+import me.davidml16.aparkour.handlers.ParkourHandler;
 import me.davidml16.aparkour.utils.*;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,7 +17,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class Event_PlateEnd implements Listener {
 
@@ -49,65 +48,8 @@ public class Event_PlateEnd implements Listener {
 					if (parkour != session.getParkour()) return;
 
 					if (main.getTimerManager().hasPlayerTimer(p)) {
-
 						if(parkour.getCheckpoints().size() == 0 || session.getLastCheckpoint() == (parkour.getCheckpoints().size() - 1)) {
-
-							Profile profile = main.getPlayerDataHandler().getData(p);
-
-							long total = session.getLiveTime();
-
-							main.getSoundUtil().playEnd(p);
-
-							main.getTitleUtil().sendEndTitle(p, parkour);
-
-							String end = main.getLanguageHandler().getMessage("EndMessage.Normal");
-							if(end.length() > 0)
-								p.sendMessage(ChatColor.translateAlternateColorCodes('&', end)
-										.replaceAll("%endTime%", main.getTimerManager().millisToString(main.getLanguageHandler().getMessage("Timer.Formats.ParkourTimer"),total)));
-
-							if (profile.getBestTimes().get(parkour.getId()) == 0 && profile.getLastTimes().get(parkour.getId()) == 0) {
-								String message = main.getLanguageHandler().getMessage("EndMessage.FirstTime");
-								if(message.length() > 0)
-									p.sendMessage(message);
-								main.getRewardHandler().giveParkourRewards(p, parkour.getId(), true);
-							}
-
-							profile.setLastTime(total, parkour.getId());
-							if (profile.getBestTimes().get(parkour.getId()) == 0) {
-								profile.setBestTime(total, parkour.getId());
-							}
-
-							main.getParkourHandler().resetPlayer(p);
-
-							main.getRewardHandler().giveParkourRewards(p, parkour.getId(), false);
-
-							if (main.getConfig().getBoolean("TpToParkourSpawn.Enabled")) {
-								p.teleport(parkour.getSpawn());
-							}
-
-							if (main.getConfig().getBoolean("Firework.Enabled")) {
-								RandomFirework.launchRandomFirework(p.getLocation());
-							}
-
-							if (profile.isBestTime(total, parkour.getId())) {
-								Player eplayer = e.getPlayer();
-								long bestTotal = profile.getBestTimes().get(parkour.getId()) - total;
-
-								String record = main.getLanguageHandler().getMessage("EndMessage.Record");
-
-								profile.setBestTime(total, parkour.getId());
-
-								if(record.length() > 0)
-									eplayer.sendMessage(ChatColor.translateAlternateColorCodes('&', record)
-											.replaceAll("%recordTime%", main.getTimerManager().millisToString(main.getLanguageHandler().getMessage("Timer.Formats.ParkourTimer"),bestTotal)));
-							}
-
-							profile.save(parkour.getId());
-
-							main.getStatsHologramManager().reloadStatsHologram(p, parkour.getId());
-
-							Bukkit.getPluginManager().callEvent(new ParkourEndEvent(p, parkour));
-
+							ParkourHandler.finishParkour(null, p);
 						} else {
 							if (!cooldown.contains(p)) {
 								cooldown.add(p);
@@ -124,5 +66,4 @@ public class Event_PlateEnd implements Listener {
 			}
 		}
 	}
-
 }

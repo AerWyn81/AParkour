@@ -164,7 +164,7 @@ public class Confirmation_GUI implements Listener {
                 ParkourSession session = main.getSessionHandler().getSession(p);
                 p.teleport(session.getParkour().getSpawn());
 
-                String message = main.getLanguageHandler().getMessage("Messages.Return");
+                String message = main.getLanguageHandler().getMessage("Messages.Leave").replaceAll("%parkourName%", session.getParkour().getName());
                 if (message.length() > 0)
                     p.sendMessage(message);
 

@@ -207,6 +207,7 @@ public class Parkour {
                 config.set("parkour.checkpoints." + iterator + ".location", checkpoint.getLocation());
                 config.set("parkour.checkpoints." + iterator + ".playerPitch", checkpoint.getPlayerPitch());
                 config.set("parkour.checkpoints." + iterator + ".playerYaw", checkpoint.getPlayerYaw());
+                config.set("parkour.checkpoints." + iterator + ".commands", checkpoint.getCheckpointCommands());
                 iterator++;
             }
         }

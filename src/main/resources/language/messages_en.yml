@@ -15,10 +15,20 @@ Commands:
   NoStats: '%prefix% &cYou dont haves statistics at this moment!'
   NoParkours: '%prefix% &cAny parkour created at this moment!'
   Reload: '%prefix% &aPlugin reloaded with no errors!'
+  Unknown: '%prefix% &cInvalid argument, use /aparkour to see available commands.'
 
 GUIs:
   Stats:
     title: 'Parkour Statistics'
+    playerStats: '&a&l%player%''s statistics'
+    parkourName: '%parkourName%'
+    lastTime: '  &fYour Last Time  '
+    lastTimeValue: '    &e%lastTime%  '
+    recordTime: '  &fYour Record Time  '
+    recordTimeValue: '    &e%recordTime%  '
+    worldRecords: '  &fWorld records  '
+    worldRecordsValue: '    &7%playerName% &f- &c%playerTime%'
+    none: '    &eNone  '
   Play:
     title: 'Play parkour'
   Config:
@@ -37,6 +47,9 @@ GUIs:
     title: '%parkour% | Miscellaneous'
   Confirmation:
     title: '%parkour% | Confirmation'
+  Layout:
+    Previous: '&aPrevious page'
+    Next: '&aNext page'
 
 Times:
   Loading: '&cLoading...'
@@ -61,6 +74,8 @@ Holograms:
   Stats:
     Line1: '&a%player%''s &a%parkour% parkour stats'
     Line2: '&aBest time&7: &6%time%'
+    Line3: ''
+    Line4: ''
   Top:
     Header:
       Line1: '&a&lTOP PARKOUR TIMES'
@@ -84,19 +99,28 @@ Holograms:
       Line2: '&f#%checkpoint%'
 
 Messages:
-  NotInParkour: '&cYour are not in any parkour..'
-  BlockedCommand: '&cYou can''t execute this command in parkour.'
-  Started: '&aStarted parkour! Get to the end as quick as possible.'
-  Fly: '&cYou can not fly when you are in parkour.'
-  Return: '&6Returning to beginning of parkour...'
-  Checkpoint: '&aYou reached checkpoint &e#%checkpoint% &ain &e%time%.'
-  ReturnCheckpoint: '&6Returning to checkpoint &e#%checkpoint%'
-  NeedCheckpoint: '&cYou first need to reach previous checkpoints to end parkour.'
+  NotInParkour: '%prefix% &cYour are not in any parkour..'
+  BlockedCommand: '%prefix% &cYou can''t execute this command in parkour.'
+  Started: '%prefix% &aStarted parkour! Get to the end as quick as possible.'
+  StartedForPlayer: '%prefix% &aParkour started for player %player% !'
+  Fly: '%prefix% &cYou can not fly when you are in parkour.'
+  Leave: '%prefix% &eYou successfully leave the parkour %parkourName%.'
+  Return: '%prefix% &6Returning to beginning of parkour...'
+  Checkpoint: '%prefix% &aYou reached checkpoint &e#%checkpoint% &ain &e%time%&6.'
+  ReturnCheckpoint: '%prefix% &6Returning to checkpoint &e#%checkpoint%&6.'
+  NeedCheckpoint: '%prefix% &cYou first need to reach previous checkpoints to end parkour.'
+  NextCheckpoint: '%prefix% &6Teleporting to next checkpoint &e#%checkpoint%&6.'
+  ReturnCheckpointForPlayer: '%prefix% &6Returning to checkpoint &e#%checkpoint% &6for player &e%player%&6.'
+  NextCheckpointForPlayer: '%prefix% &6Teleporting to next checkpoint &e#%checkpoint% &6for player &e%player%&6.'
+  HideItemCooldown: '%prefix% &eYou are in cooldown for %cooldown% more seconds.'
+  HideItemShow: '%prefix% &aAll players are now visible!'
+  HideItemHide: '%prefix% &7All players are now hidden!'
 
 EndMessage:
-  FirstTime: '&6You completed this parkour for the first time!'
-  Normal: '&6You completed the parkour in &d%endTime%'
-  Record: '&6You beat your previous best time by &d%recordTime%'
+  FirstTime: '%prefix% &6You completed this parkour for the first time!'
+  Normal: '%prefix% &6You completed the parkour in &d%endTime%'
+  Record: '%prefix% &6You beat your previous best time by &d%recordTime%'
+  EndForPlayer: '%prefix% &6Force finish for player %player%!'
 
 RestartMessage:
   Message: '&6Resetting parkour...'
@@ -111,3 +135,24 @@ Titles:
   End:
     Title: '&e&lPARKOUR CHALLENGE'
     Subtitle: '&f&lFINISHED'
+
+Help:
+  Title: '&7================ &6[ &eParkour Help &6] &7================'
+  HeadLine: '&7'
+  Help: '&8 - &7/pk | pk help &8: &e&oShow commands explanations'
+  Checkpoint: '&8 - &7/pk checkpoint &8: &e&oReturn to last checkpoint or spawn if no checkpoint exist'
+  Leave: '&8 - &7/pk leave &8: &e&oLeave current parkour'
+  Stats: '&8 - &7/pk stats &8: &e&oShow your statistics'
+  List: '&8 - &7/pk list &8: &e&oShow parkour list'
+  Top: '&8 - &7/pk top [id] &8: &e&oShow best times for a parkour [id]'
+  Play: '&8 - &7/pk play [id] &8: &e&oStart parkour [id]'
+  Start: '&8 - &7/pk start [player] [id] true/false &8: &6&oStart parkour [id] for a player [player]. Force spawn tp with true in last argument'
+  CheckpointAdmin: '&8 - &7/pk checkpoint [player] [previous/next] &8: &6&oTeleport [player] to previous or next checkpoint'
+  Finish: '&8 - &7/pk finish [player] &8: &6&oFinish current parkour for a player [player]'
+  Create: '&8 - &7/pk create [id] [name] &8: &6&oCreate a parkour id [id] and name [name]'
+  Remove: '&8 - &7/aparkour remove [id] &8: &6&oRemove a parkour id [id]'
+  Reset: '&8 - &7/pk reset [player] [id] &8: &6&oReset parkour statistics for a player [player]'
+  Setup: '&8 - &7/aparkour setup [id] &8: &6&oEdit parkour [id] settings'
+  Reload: '&8 - &7/aparkour reload &8: &6&oReload configuration & language of the plugin'
+  FooterLine: '&7'
+  EndTitle: '&7================ &6[ &eParkour Help &6] &7================'

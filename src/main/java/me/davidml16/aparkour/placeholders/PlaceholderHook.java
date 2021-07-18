@@ -6,6 +6,8 @@ import me.davidml16.aparkour.api.ParkourAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
+import java.util.UUID;
+
 public class PlaceholderHook extends PlaceholderExpansion {
 
     private Main main;

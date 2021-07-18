@@ -1,16 +1,17 @@
 package me.davidml16.aparkour.events;
 
 import me.davidml16.aparkour.Main;
-import me.davidml16.aparkour.data.Parkour;
+import me.davidml16.aparkour.data.PlayerState;
 import me.davidml16.aparkour.enums.CommandBlockType;
+import me.davidml16.aparkour.handlers.CheckpointsHandler;
 import me.davidml16.aparkour.managers.ColorManager;
-import me.davidml16.aparkour.utils.ParkourItems;
 import me.davidml16.aparkour.utils.Sounds;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -18,6 +19,9 @@ import org.bukkit.event.entity.EntityInteractEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.sql.SQLException;
 
@@ -83,6 +87,7 @@ public class Event_Others implements Listener {
         if (e.getEntity() instanceof Player) {
             if (main.getTimerManager().hasPlayerTimer((Player) e.getEntity())) {
                 e.setCancelled(true);
+                CheckpointsHandler.teleportToPreviousCheckpoint(null, (Player) e.getEntity());
             }
         }
     }
@@ -110,6 +115,14 @@ public class Event_Others implements Listener {
         } catch (SQLException e1) {
             e1.printStackTrace();
         }
+
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            if (main.getHidePlayerManager().getPlayerState(player) == PlayerState.HIDDEN)
+                if (main.isVersionLegacy())
+                    player.hidePlayer(p);
+                else
+                    player.hidePlayer(main, p);
+        });
     }
 
     @EventHandler
@@ -132,6 +145,10 @@ public class Event_Others implements Listener {
         }
 
         main.getPlayerDataHandler().getPlayersData().remove(p.getUniqueId());
+
+        if (main.getHidePlayerManager().getPlayerState(p) == PlayerState.HIDDEN) {
+            main.getHidePlayerManager().setPlayerState(p, PlayerState.SHOWN);
+        }
 
         try {
             main.getDatabaseHandler().updatePlayerName(p);
@@ -169,5 +186,4 @@ public class Event_Others implements Listener {
             }
         }
     }
-
 }

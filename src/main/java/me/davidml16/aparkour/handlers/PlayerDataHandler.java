@@ -1,6 +1,5 @@
 package me.davidml16.aparkour.handlers;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -13,8 +12,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import me.davidml16.aparkour.data.Profile;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.scheduler.BukkitTask;
 
 public class PlayerDataHandler {
 
@@ -100,10 +97,6 @@ public class PlayerDataHandler {
 		data.setLeftHand(p.getInventory().getItemInOffHand());
 		data.setLastFlyMode(p.isFlying() || p.getAllowFlight());
 
-		for(PotionEffect effect : p.getActivePotionEffects()) {
-			p.removePotionEffect(effect.getType());
-		}
-
 		p.setGameMode(main.getParkourHandler().getParkourGamemode());
 		p.getInventory().clear();
 		p.getInventory().setArmorContents(null);
@@ -135,7 +128,8 @@ public class PlayerDataHandler {
 		data.setLastGamemode(null);
 		data.setArmor(new ItemStack[4]);
 		data.setInventory(new ItemStack[p.getInventory().getContents().length]);
-		data.setPotionEffects(Collections.emptyList());
+
+		data.setPotionEffects(data.getPotionEffects());
 	}
 	
 	public boolean playerHasPermission(Player p, String permission) {

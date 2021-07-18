@@ -86,12 +86,12 @@ public interface CommonPrompts  {
                         ((Player) param1ConversationContext.getSessionData("player")).getLocation(), Sounds.MySound.NOTE_PLING, 10, 0);
                 return this;
             }
-            if (param1String.contains("&") || param1String.contains("§")) {
-                param1ConversationContext.getForWhom().sendRawMessage(ChatColor.RED + "  Color codes are not allowed!\n ");
-                Sounds.playSound((Player) param1ConversationContext.getSessionData("player"),
-                        ((Player) param1ConversationContext.getSessionData("player")).getLocation(), Sounds.MySound.NOTE_PLING, 10, 0);
-                return this;
-            }
+            //if (param1String.contains("&") || param1String.contains("§")) {
+            //    param1ConversationContext.getForWhom().sendRawMessage(ChatColor.RED + "  Color codes are not allowed!\n ");
+            //    Sounds.playSound((Player) param1ConversationContext.getSessionData("player"),
+            //            ((Player) param1ConversationContext.getSessionData("player")).getLocation(), Sounds.MySound.NOTE_PLING, 10, 0);
+            //    return this;
+            //}
 
             param1ConversationContext.setSessionData(this.storeValue, param1String);
             Sounds.playSound((Player) param1ConversationContext.getSessionData("player"),
