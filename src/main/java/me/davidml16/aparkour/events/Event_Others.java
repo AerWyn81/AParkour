@@ -11,7 +11,6 @@ import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -19,9 +18,6 @@ import org.bukkit.event.entity.EntityInteractEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
-import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.sql.SQLException;
 
@@ -145,10 +141,6 @@ public class Event_Others implements Listener {
         }
 
         main.getPlayerDataHandler().getPlayersData().remove(p.getUniqueId());
-
-        if (main.getHidePlayerManager().getPlayerState(p) == PlayerState.HIDDEN) {
-            main.getHidePlayerManager().setPlayerState(p, PlayerState.SHOWN);
-        }
 
         try {
             main.getDatabaseHandler().updatePlayerName(p);

@@ -93,4 +93,8 @@ public class HidePlayerManager {
         }
         return false;
     }
+
+    public boolean isEnabled() {
+        return main.getConfig().getBoolean("Items.HideItem.Display");
+    }
 }

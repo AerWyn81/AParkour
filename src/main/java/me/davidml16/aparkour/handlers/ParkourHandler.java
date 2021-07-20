@@ -19,7 +19,6 @@ import org.bukkit.entity.Player;
 
 import me.davidml16.aparkour.Main;
 import me.davidml16.aparkour.managers.ColorManager;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.permissions.Permission;
 
 public class ParkourHandler {
@@ -515,6 +514,9 @@ public class ParkourHandler {
 				main.getPlayerDataHandler().restorePlayerInventory(p);
 			}
 
+			if (main.getHidePlayerManager().isEnabled())
+				main.getHidePlayerManager().setPlayerState(p, PlayerState.SHOWN);
+
 			main.getSessionHandler().getSession(p).getParkour().getPlaying().remove(p.getUniqueId());
 			main.getSessionHandler().getSession(p).cancelTimer();
 			main.getSessionHandler().removeSession(p);
@@ -538,7 +540,7 @@ public class ParkourHandler {
 		if (main.isParkourItemsEnabled()) {
 			main.getPlayerDataHandler().savePlayerInventory(p);
 
-			if (config.getBoolean("Items.HideItem.Display")) {
+			if (main.getHidePlayerManager().isEnabled()) {
 				p.getInventory().setItem(main.getConfig().getInt("Items.HideItem.InventorySlot") - 1, main.getHidePlayerManager().getItem(p));
 			}
 
@@ -611,10 +613,6 @@ public class ParkourHandler {
 		profile.setLastTime(total, parkour.getId());
 		if (profile.getBestTimes().get(parkour.getId()) == 0) {
 			profile.setBestTime(total, parkour.getId());
-		}
-
-		if (main.getHidePlayerManager().getPlayerState(p) == PlayerState.HIDDEN) {
-			main.getHidePlayerManager().setPlayerState(p, PlayerState.SHOWN);
 		}
 
 		main.getParkourHandler().resetPlayer(p);
