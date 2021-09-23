@@ -93,6 +93,13 @@ public class PlaceholderHook extends PlaceholderExpansion {
                     return "" + api.getBestTimeFormatted(player.getPlayer(), identifiers[1]);
                 }
                 break;
+            case "btsec":
+                if (api.getParkoursIDs().contains(identifiers[1])) {
+                    long time = api.getBestTime(player.getPlayer(), identifiers[1]);
+                    if (time == 0) return "N/A";
+                    return "" + Math.floor(time / 1000);
+                }
+                break;
             case "players":
                 if (api.getParkoursIDs().contains(identifiers[1])) {
                     return "" + api.getParkourByID(identifiers[1]).getPlaying().size();
