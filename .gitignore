@@ -1,3 +1,7 @@
+# mvn clean install
+artifacts
+target
+
 # User-specific stuff
 .idea/
 .gradle/
