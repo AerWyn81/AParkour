@@ -48,7 +48,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.2.0</version>
                 <configuration>
-                    <outputDirectory>C:/Users/Vincent/Desktop/Minecraft J2C/Serveurs/1.17/plugins</outputDirectory>
+                    <outputDirectory>./build</outputDirectory>
                 </configuration>
             </plugin>
 
