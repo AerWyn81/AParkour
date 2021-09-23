@@ -259,8 +259,9 @@ public class Main extends JavaPlugin {
         log.sendMessage(ColorManager.translate("    &aAuthor: &b" + pdf.getAuthors().get(0)));
         log.sendMessage("");
 
-        if (pluginManager != null)
+        if (pluginManager != null) {
             pluginManager.removePlayersFromParkour();
+        }
 
         if(isHologramsEnabled()) {
             for (Hologram hologram : HologramsAPI.getHolograms(this)) {
@@ -268,7 +269,10 @@ public class Main extends JavaPlugin {
             }
         }
 
-        hologramTask.stop();
+        if (hologramTask != null) {
+            hologramTask.stop();
+        }
+
         databaseHandler.getDatabase().close();
     }
 
