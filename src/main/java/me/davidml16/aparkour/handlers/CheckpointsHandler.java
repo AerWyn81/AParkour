@@ -7,7 +7,6 @@ import me.davidml16.aparkour.data.Parkour;
 import me.davidml16.aparkour.data.ParkourSession;
 import me.davidml16.aparkour.data.Plate;
 import me.davidml16.aparkour.managers.ColorManager;
-import me.davidml16.aparkour.utils.Sounds;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;

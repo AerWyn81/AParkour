@@ -14,8 +14,6 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.ClickType;
-import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
@@ -26,15 +24,15 @@ import java.util.*;
 
 public class Holograms_GUI implements Listener {
 
-    private HashMap<UUID, String> opened;
-    private HashMap<String, Inventory> guis;
+    private final HashMap<UUID, String> opened;
+    private final HashMap<String, Inventory> guis;
 
-    private Main main;
+    private final Main main;
 
     public Holograms_GUI(Main main) {
         this.main = main;
-        this.opened = new HashMap<UUID, String>();
-        this.guis = new HashMap<String, Inventory>();
+        this.opened = new HashMap<>();
+        this.guis = new HashMap<>();
         this.main.getServer().getPluginManager().registerEvents(this, this.main);
     }
 

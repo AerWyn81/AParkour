@@ -20,12 +20,12 @@ import java.util.List;
 
 public class Event_PlateStart implements Listener {
 
-    private Main main;
+    private final Main main;
     public Event_PlateStart(Main main) {
         this.main = main;
     }
 
-    private List<Player> cooldown = new ArrayList<Player>();
+    private final List<Player> cooldown = new ArrayList<Player>();
 
     private static final HashMap<Player, Long> ironPlateResetDenyCooldown = new HashMap<>();
 

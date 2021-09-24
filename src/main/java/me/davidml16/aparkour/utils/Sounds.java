@@ -9,14 +9,14 @@ public class Sounds {
 	public static void playSound(Location location, MySound mySound, float volume, float pitch) {
 		try {
 			location.getWorld().playSound(location, mySound.get(), volume, pitch);
-		} catch (Exception localException) {
+		} catch (Exception ignored) {
 		}
 	}
 
 	public static void playSound(Player player, Location location, MySound mySound, float volume, float pitch) {
 		try {
 			player.playSound(location, mySound.get(), volume, pitch);
-		} catch (Exception localException) {
+		} catch (Exception ignored) {
 		}
 	}
 
@@ -136,10 +136,10 @@ public class Sounds {
 		VILLAGER_HIT("VILLAGER_HIT", "ENTITY_VILLAGER_HURT"), VILLAGER_IDLE("VILLAGER_IDLE", "ENTITY_VILLAGER_AMBIENT"),
 		VILLAGER_NO("VILLAGER_NO", "ENTITY_VILLAGER_NO"), VILLAGER_YES("VILLAGER_YES", "ENTITY_VILLAGER_YES");
 
-		private String oldName;
-		private String newName;
+		private final String oldName;
+		private final String newName;
 
-		private MySound(String oldName, String newName) {
+		MySound(String oldName, String newName) {
 			this.oldName = oldName;
 			this.newName = newName;
 		}

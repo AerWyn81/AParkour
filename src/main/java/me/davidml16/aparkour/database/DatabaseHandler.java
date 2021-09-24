@@ -6,13 +6,14 @@ import me.davidml16.aparkour.Main;
 import me.davidml16.aparkour.database.types.MariaDB;
 import me.davidml16.aparkour.database.types.MySQL;
 import me.davidml16.aparkour.database.types.SQLite;
+import me.davidml16.aparkour.enums.DatabaseType;
 import me.davidml16.aparkour.managers.ColorManager;
 
 public class DatabaseHandler {
 
 	private Database database;
 
-	private Main main;
+	private final Main main;
 
 	public DatabaseHandler(Main main) {
 		this.main = main;
@@ -43,8 +44,4 @@ public class DatabaseHandler {
 	}
 
 	public Database getDatabase() { return database; }
-
-	private enum DatabaseType {
-		SQLITE, MYSQL, MARIADB
-	}
 }

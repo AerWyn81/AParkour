@@ -17,7 +17,7 @@ public class SessionHandler {
 
     public SessionHandler(Main main) {
         this.main = main;
-        this.sessions = new HashMap<UUID, ParkourSession>();
+        this.sessions = new HashMap<>();
     }
 
     public Map<UUID, ParkourSession> getSessions() {

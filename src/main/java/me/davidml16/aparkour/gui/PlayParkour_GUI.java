@@ -21,14 +21,14 @@ import java.util.*;
 
 public class PlayParkour_GUI implements Listener {
 
-	private HashMap<UUID, Integer> opened;
-	private List<Integer> borders;
+	private final HashMap<UUID, Integer> opened;
+	private final List<Integer> borders;
 
-	private Main main;
+	private final Main main;
 
 	public PlayParkour_GUI(Main main) {
 		this.main = main;
-		this.opened = new HashMap<UUID, Integer>();
+		this.opened = new HashMap<>();
 		this.borders = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 17, 18, 26, 27, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44);
 		this.main.getServer().getPluginManager().registerEvents(this, this.main);
 	}

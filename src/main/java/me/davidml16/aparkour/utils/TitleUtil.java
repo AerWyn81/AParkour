@@ -23,7 +23,7 @@ import java.util.Objects;
 
 public class TitleUtil implements Listener {
 
-    private Main main;
+    private final Main main;
     public TitleUtil(Main main) {
         this.main = main;
     }

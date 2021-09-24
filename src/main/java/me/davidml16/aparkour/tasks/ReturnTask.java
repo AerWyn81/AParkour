@@ -3,9 +3,7 @@ package me.davidml16.aparkour.tasks;
 import me.davidml16.aparkour.Main;
 import me.davidml16.aparkour.api.events.ParkourCheckpointEvent;
 import me.davidml16.aparkour.api.events.ParkourReturnEvent;
-import me.davidml16.aparkour.data.Parkour;
 import me.davidml16.aparkour.data.ParkourSession;
-import me.davidml16.aparkour.data.Profile;
 import me.davidml16.aparkour.utils.WalkableBlocksUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -18,7 +16,7 @@ public class ReturnTask {
 
     private int id;
 
-    private Main main;
+    private final Main main;
     public ReturnTask(Main main) {
         this.main = main;
     }

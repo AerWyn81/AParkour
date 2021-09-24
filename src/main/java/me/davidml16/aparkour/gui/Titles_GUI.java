@@ -2,7 +2,6 @@ package me.davidml16.aparkour.gui;
 
 import me.davidml16.aparkour.Main;
 import me.davidml16.aparkour.data.Parkour;
-import me.davidml16.aparkour.data.Plate;
 import me.davidml16.aparkour.managers.ColorManager;
 import me.davidml16.aparkour.utils.ItemBuilder;
 import me.davidml16.aparkour.utils.Sounds;
@@ -25,15 +24,15 @@ import java.util.UUID;
 
 public class Titles_GUI implements Listener {
 
-    private HashMap<UUID, String> opened;
-    private HashMap<String, Inventory> guis;
+    private final HashMap<UUID, String> opened;
+    private final HashMap<String, Inventory> guis;
 
-    private Main main;
+    private final Main main;
 
     public Titles_GUI(Main main) {
         this.main = main;
-        this.opened = new HashMap<UUID, String>();
-        this.guis = new HashMap<String, Inventory>();
+        this.opened = new HashMap<>();
+        this.guis = new HashMap<>();
         this.main.getServer().getPluginManager().registerEvents(this, this.main);
     }
 

@@ -49,7 +49,6 @@ public class Main extends JavaPlugin {
     private Confirmation_GUI confirmationGUI;
 
     private HologramTask hologramTask;
-    private ReturnTask returnTask;
 
     private TimerManager timerManager;
     private StatsHologramManager statsHologramManager;
@@ -75,8 +74,6 @@ public class Main extends JavaPlugin {
 
     private CommandBlocker commandBlocker;
 
-    private MetricsLite metrics;
-
     private ParkourAPI parkourAPI;
 
     private boolean hologramsEnabled;
@@ -88,7 +85,7 @@ public class Main extends JavaPlugin {
 
     public void onEnable() {
         instance = this;
-        metrics = new MetricsLite(this, 6728);
+        new MetricsLite(this, 6728);
         log = Bukkit.getConsoleSender();
 
         saveDefaultConfig();
@@ -146,7 +143,7 @@ public class Main extends JavaPlugin {
         playerDataHandler = new PlayerDataHandler(this);
         sessionHandler = new SessionHandler(this);
 
-        leaderboardHandler = new LeaderboardHandler(this);
+        leaderboardHandler = new LeaderboardHandler();
 
         timerManager = new TimerManager(this);
 
@@ -187,7 +184,7 @@ public class Main extends JavaPlugin {
         hologramTask = new HologramTask(this);
         hologramTask.start();
 
-        returnTask = new ReturnTask(this);
+        ReturnTask returnTask = new ReturnTask(this);
         returnTask.start();
 
         soundUtil = new SoundUtil(this);

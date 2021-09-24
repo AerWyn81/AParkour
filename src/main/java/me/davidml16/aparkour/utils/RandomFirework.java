@@ -1,6 +1,7 @@
 package me.davidml16.aparkour.utils;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import org.bukkit.Color;
@@ -10,8 +11,8 @@ import org.bukkit.entity.Firework;
 import org.bukkit.inventory.meta.FireworkMeta;
 
 public class RandomFirework {
-	private static ArrayList<Color> colors = new ArrayList();
-	private static ArrayList<FireworkEffect.Type> types = new ArrayList();
+	private static final List<Color> colors = new ArrayList<>();
+	private static final List<FireworkEffect.Type> types = new ArrayList<>();
 	private static Random random = null;
 
 	private static void loadColors() {
@@ -50,16 +51,16 @@ public class RandomFirework {
 
 	private static FireworkEffect.Type getRandomType() {
 		int i = types.size();
-		return (FireworkEffect.Type) types.get(random.nextInt(i));
+		return types.get(random.nextInt(i));
 	}
 
 	private static Color getRandomColor() {
 		int i = colors.size();
-		return (Color) colors.get(random.nextInt(i));
+		return colors.get(random.nextInt(i));
 	}
 
 	public static void launchRandomFirework(Location paramLocation) {
-		Firework firework = (Firework) paramLocation.getWorld().spawn(paramLocation, Firework.class);
+		Firework firework = paramLocation.getWorld().spawn(paramLocation, Firework.class);
 		FireworkMeta fireworkMeta = firework.getFireworkMeta();
 		fireworkMeta.setPower(1);
 

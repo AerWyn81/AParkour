@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.UUID;
 
 import org.bukkit.GameMode;
-import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
@@ -17,9 +16,9 @@ import org.bukkit.potion.PotionEffect;
 
 public class Profile {
 
-	private Main main;
+	private final Main main;
 
-	private UUID uuid;
+	private final UUID uuid;
 
 	private ItemStack[] inventory;
 	private ItemStack[] armor;
