@@ -18,11 +18,11 @@ import me.davidml16.aparkour.Main;
 
 public class LanguageHandler {
 
-	private String language = null;
+	private String language;
 
-	private HashMap<String, String> messages;
+	private final HashMap<String, String> messages;
 
-	private Main main;
+	private final Main main;
 
 	public LanguageHandler(Main main, String language) {
 		this.main = main;

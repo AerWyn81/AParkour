@@ -7,31 +7,26 @@ import me.davidml16.aparkour.Main;
 import me.davidml16.aparkour.data.LeaderboardEntry;
 import me.davidml16.aparkour.data.Parkour;
 import org.bukkit.Bukkit;
-import org.bukkit.Color;
 
-import java.sql.SQLException;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
 
 public class TopHologramManager {
 
-    private HashMap<String, Hologram> holoHeader;
-    private HashMap<String, Hologram> holoBody;
-    private HashMap<String, TextLine> holoFooter;
+    private final HashMap<String, Hologram> holoHeader;
+    private final HashMap<String, Hologram> holoBody;
+    private final HashMap<String, TextLine> holoFooter;
 
     private int timeLeft;
     private int reloadInterval;
 
-    private Main main;
+    private final Main main;
 
     public TopHologramManager(Main main, int reloadInterval) {
         this.main = main;
         this.reloadInterval = reloadInterval;
-        this.holoHeader = new HashMap<String, Hologram>();
-        this.holoBody = new HashMap<String, Hologram>();
-        this.holoFooter = new HashMap<String, TextLine>();
+        this.holoHeader = new HashMap<>();
+        this.holoBody = new HashMap<>();
+        this.holoFooter = new HashMap<>();
     }
 
     public HashMap<String, Hologram> getHoloHeader() {

@@ -23,21 +23,19 @@ import org.bukkit.permissions.Permission;
 
 public class ParkourHandler {
 
-	private HashMap<String, Parkour> parkours;
-	private HashMap<String, File> parkourFiles;
-	private HashMap<String, YamlConfiguration> parkourConfigs;
+	private final HashMap<String, Parkour> parkours;
+	private final HashMap<String, File> parkourFiles;
+	private final HashMap<String, YamlConfiguration> parkourConfigs;
 
 	private GameMode parkourGamemode;
 
 	private static Main main;
-	private static FileConfiguration config;
 
 	public ParkourHandler(Main main) {
 		this.main = main;
-		this.config = main.getConfig();
-		this.parkours = new HashMap<String, Parkour>();
-		this.parkourFiles = new HashMap<String, File>();
-		this.parkourConfigs = new HashMap<String, YamlConfiguration>();
+		this.parkours = new HashMap<>();
+		this.parkourFiles = new HashMap<>();
+		this.parkourConfigs = new HashMap<>();
 		this.parkourGamemode = GameMode.valueOf(this.main.getConfig().getString("ParkourGamemode"));
 	}
 

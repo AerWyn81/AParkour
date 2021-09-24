@@ -8,8 +8,8 @@ import org.bukkit.event.HandlerList;
 public class ParkourStartEvent extends Event {
 
     public static final HandlerList handlers = new HandlerList();
-    private Player p;
-    private Parkour parkour;
+    private final Player p;
+    private final Parkour parkour;
 
     public ParkourStartEvent(Player p, Parkour parkour) {
         this.p = p;

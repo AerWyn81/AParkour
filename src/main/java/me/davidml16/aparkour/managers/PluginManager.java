@@ -1,18 +1,15 @@
 package me.davidml16.aparkour.managers;
 
 import me.davidml16.aparkour.Main;
-import me.davidml16.aparkour.data.Parkour;
 import me.davidml16.aparkour.data.ParkourSession;
 import me.davidml16.aparkour.enums.CommandBlockType;
-import me.davidml16.aparkour.utils.ActionBar;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerTeleportEvent;
 
 public class PluginManager {
 
-    private Main main;
+    private final Main main;
     public PluginManager(Main main) {
         this.main = main;
     }

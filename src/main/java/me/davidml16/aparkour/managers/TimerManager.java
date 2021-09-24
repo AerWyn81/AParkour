@@ -1,9 +1,7 @@
 package me.davidml16.aparkour.managers;
 
 import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
 
-import me.davidml16.aparkour.data.Parkour;
 import me.davidml16.aparkour.utils.MillisecondConverter;
 import org.bukkit.entity.Player;
 
@@ -11,9 +9,9 @@ import me.davidml16.aparkour.Main;
 
 public class TimerManager {
 	
-	private boolean actionBarEnabled;
+	private final boolean actionBarEnabled;
 
-	private Main main;
+	private final Main main;
 
 	public TimerManager(Main main) {
 		this.main = main;

@@ -11,7 +11,7 @@ import java.util.function.Consumer;
 
 public class UpdateChecker {
 
-    private Main plugin;
+    private final Main plugin;
     public UpdateChecker(Main plugin) {
         this.plugin = plugin;
     }

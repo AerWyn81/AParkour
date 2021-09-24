@@ -1,12 +1,10 @@
 package me.davidml16.aparkour.events;
 
-import com.sun.org.apache.xerces.internal.xs.StringList;
 import me.davidml16.aparkour.Main;
 import me.davidml16.aparkour.api.events.ParkourCheckpointEvent;
 import me.davidml16.aparkour.data.Parkour;
 import me.davidml16.aparkour.data.ParkourSession;
 import me.davidml16.aparkour.data.Plate;
-import me.davidml16.aparkour.managers.ColorManager;
 import me.davidml16.aparkour.utils.Sounds;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -18,11 +16,10 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class Event_PlateCheckpoint implements Listener {
 
-	private Main main;
+	private final Main main;
 	public Event_PlateCheckpoint(Main main) {
 		this.main = main;
 	}

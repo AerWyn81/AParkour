@@ -2,8 +2,8 @@ package me.davidml16.aparkour.data;
 
 public class Pair {
 
-    private String parkour;
-    private int page;
+    private final String parkour;
+    private final int page;
 
     public Pair(String parkour, int page) {
         this.parkour = parkour;

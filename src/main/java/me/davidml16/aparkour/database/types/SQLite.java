@@ -51,6 +51,7 @@ public class SQLite implements Database {
         }
     }
 
+    @Override
     public void loadTables() {
         PreparedStatement statement = null;
         try {
@@ -85,6 +86,7 @@ public class SQLite implements Database {
         }
     }
 
+    @Override
     public void deleteParkourRows(String parkour) {
         Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
             PreparedStatement ps = null;
@@ -105,6 +107,7 @@ public class SQLite implements Database {
         });
     }
 
+    @Override
     public boolean hasData(UUID uuid, String parkour) throws SQLException {
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -126,6 +129,7 @@ public class SQLite implements Database {
         return false;
     }
 
+    @Override
     public void createData(UUID uuid, String parkour) throws SQLException {
         PreparedStatement ps = null;
         try {
@@ -140,6 +144,7 @@ public class SQLite implements Database {
         }
     }
 
+    @Override
     public boolean hasName(Player p) throws SQLException {
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -161,6 +166,7 @@ public class SQLite implements Database {
         return false;
     }
 
+    @Override
     public void updatePlayerName(Player p) {
         Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
             PreparedStatement ps = null;
@@ -183,6 +189,7 @@ public class SQLite implements Database {
         });
     }
 
+    @Override
     public String getPlayerName(String uuid) throws SQLException {
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -197,6 +204,7 @@ public class SQLite implements Database {
         return "";
     }
 
+    @Override
     public String getPlayerUUID(String name) throws SQLException {
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -217,6 +225,7 @@ public class SQLite implements Database {
         return "";
     }
 
+    @Override
     public Long getLastTime(UUID uuid, String parkour) throws SQLException {
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -238,6 +247,7 @@ public class SQLite implements Database {
         return 0L;
     }
 
+    @Override
     public Long getBestTime(UUID uuid, String parkour) throws SQLException {
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -259,6 +269,7 @@ public class SQLite implements Database {
         return 0L;
     }
 
+    @Override
     public void setTimes(UUID uuid, Long lastTime, Long bestTime, String parkour) {
         Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
             PreparedStatement ps = null;
@@ -283,6 +294,7 @@ public class SQLite implements Database {
         });
     }
 
+    @Override
     public CompletableFuture<Map<String, Long>> getPlayerLastTimes(UUID uuid) {
         CompletableFuture<Map<String, Long>> result = new CompletableFuture<>();
         HashMap<String, Long> times = new HashMap<String, Long>();
@@ -305,6 +317,7 @@ public class SQLite implements Database {
         return result;
     }
 
+    @Override
     public CompletableFuture<Map<String, Long>> getPlayerBestTimes(UUID uuid) {
         CompletableFuture<Map<String, Long>> result = new CompletableFuture<>();
         HashMap<String, Long> times = new HashMap<String, Long>();
@@ -327,6 +340,7 @@ public class SQLite implements Database {
         return result;
     }
 
+    @Override
     public CompletableFuture<List<LeaderboardEntry>> getParkourBestTimes(String id, int amount) {
         CompletableFuture<List<LeaderboardEntry>> result = new CompletableFuture<>();
 

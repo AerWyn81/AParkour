@@ -2,22 +2,20 @@ package me.davidml16.aparkour.data;
 
 import me.davidml16.aparkour.Main;
 import me.davidml16.aparkour.utils.ActionBar;
-import me.davidml16.aparkour.utils.MillisecondConverter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.text.SimpleDateFormat;
 import java.util.concurrent.TimeUnit;
 
 public class ParkourSession {
 
-    private Main main;
+    private final Main main;
 
-    private Player player;
-    private Parkour parkour;
+    private final Player player;
+    private final Parkour parkour;
 
     private Integer lastCheckpoint;
     private Location lastCheckpointLocation;

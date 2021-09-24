@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.UUID;
 
 import me.davidml16.aparkour.data.LeaderboardEntry;
-import me.davidml16.aparkour.data.Pair;
-import me.davidml16.aparkour.data.Plate;
 import me.davidml16.aparkour.managers.ColorManager;
 import me.davidml16.aparkour.utils.ItemBuilder;
 import me.davidml16.aparkour.utils.Sounds;
@@ -27,14 +25,14 @@ import me.davidml16.aparkour.data.Parkour;
 
 public class PlayerStats_GUI implements Listener {
 
-	private HashMap<UUID, Integer> opened;
-	private List<Integer> borders;
+	private final HashMap<UUID, Integer> opened;
+	private final List<Integer> borders;
 
-	private Main main;
+	private final Main main;
 
 	public PlayerStats_GUI(Main main) {
 		this.main = main;
-		this.opened = new HashMap<UUID, Integer>();
+		this.opened = new HashMap<>();
 		this.borders = Arrays.asList(0, 1, 2, 3, 5, 6, 7, 8, 9, 17, 18, 26, 27, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44);
 		this.main.getServer().getPluginManager().registerEvents(this, this.main);
 	}

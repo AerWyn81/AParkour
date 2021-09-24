@@ -14,7 +14,7 @@ import me.davidml16.aparkour.Main;
 
 public class Event_Fall implements Listener {
 
-	private Main main;
+	private final Main main;
 	public Event_Fall(Main main) {
 		this.main = main;
 	}
