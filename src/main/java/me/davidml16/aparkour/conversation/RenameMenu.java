@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 
 public class RenameMenu implements ConversationAbandonedListener, CommonPrompts {
 
-    private Main main;
+    private final Main main;
     public RenameMenu(Main main) {
         this.main = main;
     }
@@ -39,7 +39,7 @@ public class RenameMenu implements ConversationAbandonedListener, CommonPrompts 
             Player player = (Player) param1ConversationContext.getSessionData("player");
             switch (param1String) {
                 case "1":
-                    return new CommonPrompts.UncoloredStringPrompt(main, this, true,ChatColor.YELLOW + "  Enter parkour name (Don't use color codes), \"cancel\" to return.\n\n ", "parkourName");
+                    return new CommonPrompts.UncoloredStringPrompt(this, true,ChatColor.YELLOW + "  Enter parkour name (Don't use color codes), \"cancel\" to return.\n\n ", "parkourName");
                 case "2":
                     String name = (String) param1ConversationContext.getSessionData("parkourName");
                     parkour.setName(name);

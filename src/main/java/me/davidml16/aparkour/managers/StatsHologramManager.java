@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.davidml16.aparkour.data.Parkour;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
@@ -16,7 +15,7 @@ import me.davidml16.aparkour.Main;
 
 public class StatsHologramManager {
 
-	private Main main;
+	private final Main main;
 	public StatsHologramManager(Main main) {
 		this.main = main;
 	}

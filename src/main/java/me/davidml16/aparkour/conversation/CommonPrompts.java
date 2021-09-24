@@ -12,15 +12,13 @@ import org.bukkit.entity.Player;
 
 public interface CommonPrompts  {
 
-    public static class CommonStringPrompt extends StringPrompt {
-        private Prompt parentPrompt;
-        private String text;
-        private String storeValue;
-        private boolean allowSpaces;
-        private Main main;
+    class CommonStringPrompt extends StringPrompt {
+        private final Prompt parentPrompt;
+        private final String text;
+        private final String storeValue;
+        private final boolean allowSpaces;
 
-        public CommonStringPrompt(Main main, Prompt param1Prompt, boolean param1Boolean, String param1String1, String param1String2) {
-            this.main = main;
+        public CommonStringPrompt(Prompt param1Prompt, boolean param1Boolean, String param1String1, String param1String2) {
             this.parentPrompt = param1Prompt;
             this.allowSpaces = param1Boolean;
             this.text = param1String1;
@@ -28,7 +26,7 @@ public interface CommonPrompts  {
         }
 
         public CommonStringPrompt(Prompt param1Prompt, String param1String1, String param1String2) {
-            this(null, param1Prompt, true, param1String1, param1String2);
+            this(param1Prompt, true, param1String1, param1String2);
         }
 
         public String getPromptText(ConversationContext param1ConversationContext) {
@@ -53,15 +51,13 @@ public interface CommonPrompts  {
         }
     }
 
-    public static class UncoloredStringPrompt extends StringPrompt {
-        private Prompt parentPrompt;
-        private String text;
-        private String storeValue;
-        private boolean allowSpaces;
-        private Main main;
+    class UncoloredStringPrompt extends StringPrompt {
+        private final Prompt parentPrompt;
+        private final String text;
+        private final String storeValue;
+        private final boolean allowSpaces;
 
-        public UncoloredStringPrompt(Main main, Prompt param1Prompt, boolean param1Boolean, String param1String1, String param1String2) {
-            this.main = main;
+        public UncoloredStringPrompt(Prompt param1Prompt, boolean param1Boolean, String param1String1, String param1String2) {
             this.parentPrompt = param1Prompt;
             this.allowSpaces = param1Boolean;
             this.text = param1String1;
@@ -69,7 +65,7 @@ public interface CommonPrompts  {
         }
 
         public UncoloredStringPrompt(Prompt param1Prompt, String param1String1, String param1String2) {
-            this(null, param1Prompt, true, param1String1, param1String2);
+            this(param1Prompt, true, param1String1, param1String2);
         }
 
         public String getPromptText(ConversationContext param1ConversationContext) {
@@ -100,14 +96,12 @@ public interface CommonPrompts  {
         }
     }
 
-    public static class BooleanPrompt extends StringPrompt {
-        private Prompt parentPrompt;
-        private String text;
-        private String storeValue;
-        private Main main;
+    class BooleanPrompt extends StringPrompt {
+        private final Prompt parentPrompt;
+        private final String text;
+        private final String storeValue;
 
-        public BooleanPrompt(Main main, Prompt param1Prompt, String param1String1, String param1String2) {
-            this.main = main;
+        public BooleanPrompt(Prompt param1Prompt, String param1String1, String param1String2) {
             this.parentPrompt = param1Prompt;
             this.text = param1String1;
             this.storeValue = param1String2;
@@ -143,9 +137,9 @@ public interface CommonPrompts  {
         }
     }
 
-    public static class ConfirmExitPrompt extends StringPrompt {
-        private Prompt parent;
-        private Main main;
+    class ConfirmExitPrompt extends StringPrompt {
+        private final Prompt parent;
+        private final Main main;
 
         ConfirmExitPrompt(Main main, Prompt param1Prompt) {
             this.main = main;
@@ -177,13 +171,11 @@ public interface CommonPrompts  {
         }
     }
 
-    public static class ErrorPrompt extends StringPrompt {
-        private Prompt parent;
-        private String text;
-        private Main main;
+    class ErrorPrompt extends StringPrompt {
+        private final Prompt parent;
+        private final String text;
 
-        ErrorPrompt(Main main, Prompt param1Prompt, String param1String1) {
-            this.main = main;
+        ErrorPrompt(Prompt param1Prompt, String param1String1) {
             this.parent = param1Prompt;
             this.text = param1String1;
         }

@@ -8,7 +8,7 @@ public class HologramTask {
 	
 	private int id;
 
-	private Main main;
+	private final Main main;
 	public HologramTask(Main main) {
 		this.main = main;
 	}

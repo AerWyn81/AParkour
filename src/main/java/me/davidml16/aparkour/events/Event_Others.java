@@ -23,7 +23,7 @@ import java.sql.SQLException;
 
 public class Event_Others implements Listener {
 
-    private Main main;
+    private final Main main;
     public Event_Others(Main main) {
         this.main = main;
     }

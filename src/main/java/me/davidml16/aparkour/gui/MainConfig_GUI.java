@@ -1,18 +1,11 @@
 package me.davidml16.aparkour.gui;
 
 import me.davidml16.aparkour.Main;
-import me.davidml16.aparkour.conversation.RenameMenu;
-import me.davidml16.aparkour.conversation.RewardMenu;
-import me.davidml16.aparkour.data.Parkour;
 import me.davidml16.aparkour.managers.ColorManager;
-import me.davidml16.aparkour.managers.PluginManager;
 import me.davidml16.aparkour.utils.ItemBuilder;
-import me.davidml16.aparkour.utils.LocationUtil;
 import me.davidml16.aparkour.utils.Sounds;
 import org.bukkit.Bukkit;
-import org.bukkit.DyeColor;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -28,15 +21,15 @@ import java.util.*;
 
 public class MainConfig_GUI implements Listener {
 
-    private HashMap<UUID, String> opened;
-    private HashMap<String, Inventory> guis;
+    private final HashMap<UUID, String> opened;
+    private final HashMap<String, Inventory> guis;
 
-    private Main main;
+    private final Main main;
 
     public MainConfig_GUI(Main main) {
         this.main = main;
-        this.opened = new HashMap<UUID, String>();
-        this.guis = new HashMap<String, Inventory>();
+        this.opened = new HashMap<>();
+        this.guis = new HashMap<>();
         this.main.getServer().getPluginManager().registerEvents(this, this.main);
     }
 

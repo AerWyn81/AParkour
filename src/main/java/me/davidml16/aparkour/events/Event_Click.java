@@ -17,7 +17,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class Event_Click implements Listener {
 
-    private Main main;
+    private final Main main;
     public Event_Click(Main main) {
         this.main = main;
     }

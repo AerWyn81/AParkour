@@ -3,21 +3,17 @@ package me.davidml16.aparkour.events;
 import me.davidml16.aparkour.Main;
 import me.davidml16.aparkour.api.events.ParkourCheckpointEvent;
 import me.davidml16.aparkour.api.events.ParkourReturnEvent;
-import me.davidml16.aparkour.data.Parkour;
 import me.davidml16.aparkour.data.ParkourSession;
-import me.davidml16.aparkour.data.Profile;
-import me.davidml16.aparkour.utils.SoundUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
 
 public class Event_Void implements Listener {
 
-	private Main main;
+	private final Main main;
 	public Event_Void(Main main) {
 		this.main = main;
 	}

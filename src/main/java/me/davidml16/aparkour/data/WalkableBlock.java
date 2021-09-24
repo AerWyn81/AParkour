@@ -19,11 +19,11 @@ public class WalkableBlock {
             397, 144
     );
 
-    private int id;
-    private byte data;
+    private final int id;
+    private final byte data;
 
-    private boolean directional;
-    private boolean skull;
+    private final boolean directional;
+    private final boolean skull;
 
     public WalkableBlock(int id, byte data) {
         this.id = id;

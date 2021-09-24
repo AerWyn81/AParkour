@@ -6,7 +6,7 @@ import me.davidml16.aparkour.Main;
 
 public class SoundUtil {
 
-	private Main main;
+	private final Main main;
 	public SoundUtil(Main main) {
 		this.main = main;
 	}

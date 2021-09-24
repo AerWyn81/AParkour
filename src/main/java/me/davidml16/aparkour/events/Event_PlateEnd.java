@@ -1,10 +1,8 @@
 package me.davidml16.aparkour.events;
 
 import me.davidml16.aparkour.Main;
-import me.davidml16.aparkour.api.events.ParkourEndEvent;
 import me.davidml16.aparkour.data.Parkour;
 import me.davidml16.aparkour.data.ParkourSession;
-import me.davidml16.aparkour.data.Profile;
 import me.davidml16.aparkour.handlers.ParkourHandler;
 import me.davidml16.aparkour.utils.*;
 import org.bukkit.Bukkit;
@@ -20,12 +18,12 @@ import java.util.List;
 
 public class Event_PlateEnd implements Listener {
 
-	private Main main;
+	private final Main main;
 	public Event_PlateEnd(Main main) {
 		this.main = main;
 	}
 
-	private List<Player> cooldown = new ArrayList<Player>();
+	private final List<Player> cooldown = new ArrayList<Player>();
 
 	@EventHandler
 	public void Plate(PlayerInteractEvent e) {

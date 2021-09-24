@@ -26,16 +26,16 @@ import java.util.*;
 
 public class Checkpoints_GUI implements Listener {
 
-    private HashMap<UUID, Pair> opened;
-    private HashMap<String, Inventory> guis;
-    private List<Integer> borders;
+    private final HashMap<UUID, Pair> opened;
+    private final HashMap<String, Inventory> guis;
+    private final List<Integer> borders;
 
-    private Main main;
+    private final Main main;
 
     public Checkpoints_GUI(Main main) {
         this.main = main;
-        this.opened = new HashMap<UUID, Pair>();
-        this.guis = new HashMap<String, Inventory>();
+        this.opened = new HashMap<>();
+        this.guis = new HashMap<>();
         this.borders = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 17, 18, 26, 27, 35, 36, 37, 38, 40, 42, 43, 44);
         this.main.getServer().getPluginManager().registerEvents(this, this.main);
     }

@@ -17,7 +17,7 @@ import org.bukkit.entity.Player;
 
 public class RewardMenu implements ConversationAbandonedListener, CommonPrompts {
 
-    private Main main;
+    private final Main main;
     public RewardMenu(Main main) {
         this.main = main;
     }
@@ -40,15 +40,15 @@ public class RewardMenu implements ConversationAbandonedListener, CommonPrompts 
             Parkour parkour = (Parkour) param1ConversationContext.getSessionData("parkour");
             switch (param1String) {
                 case "1":
-                    return new CommonPrompts.CommonStringPrompt(main, this, false,ChatColor.YELLOW + "  Enter reward identificator, \"cancel\" to return.\n\n ", "rewardID");
+                    return new CommonPrompts.CommonStringPrompt(this, false,ChatColor.YELLOW + "  Enter reward identificator, \"cancel\" to return.\n\n ", "rewardID");
                 case "2":
-                    return new CommonPrompts.CommonStringPrompt(main, this, false, ChatColor.YELLOW + "  Enter reward permission, \"cancel\" to return.\n  Example 'aparkour.permission.reward'\n  Write * to disable permission\n\n ", "rewardPermission");
+                    return new CommonPrompts.CommonStringPrompt(this, false, ChatColor.YELLOW + "  Enter reward permission, \"cancel\" to return.\n  Example 'aparkour.permission.reward'\n  Write * to disable permission\n\n ", "rewardPermission");
                 case "3":
-                    return new CommonPrompts.CommonStringPrompt(main,this, true,ChatColor.YELLOW + "  Enter reward command, \"cancel\" to return.\n  Available variables: %player%\n\n ", "rewardCommand");
+                    return new CommonPrompts.CommonStringPrompt(this, true,ChatColor.YELLOW + "  Enter reward command, \"cancel\" to return.\n  Available variables: %player%\n\n ", "rewardCommand");
                 case "4":
-                    return new CommonPrompts.BooleanPrompt(main, this,ChatColor.YELLOW + "  Choose if reward is only in first time, \"cancel\" to return.\n  Write 'true' or 'false'\n\n ", "rewardFirstTime");
+                    return new CommonPrompts.BooleanPrompt(this,ChatColor.YELLOW + "  Choose if reward is only in first time, \"cancel\" to return.\n  Write 'true' or 'false'\n\n ", "rewardFirstTime");
                 case "5":
-                    return new CommonPrompts.CommonStringPrompt(main, this, true,ChatColor.YELLOW + "  Enter reward chance (0% to 100%), \"cancel\" to return.\n\n ", "rewardChance");
+                    return new CommonPrompts.CommonStringPrompt(this, true,ChatColor.YELLOW + "  Enter reward chance (0% to 100%), \"cancel\" to return.\n\n ", "rewardChance");
                 case "6":
                     if(param1ConversationContext.getSessionData("rewardID") != null
                             && param1ConversationContext.getSessionData("rewardPermission") != null
@@ -74,10 +74,10 @@ public class RewardMenu implements ConversationAbandonedListener, CommonPrompts 
                             main.getRewardsGUI().open((Player) param1ConversationContext.getSessionData("player"), parkour.getId());
                             return Prompt.END_OF_CONVERSATION;
                         } else {
-                            return new CommonPrompts.ErrorPrompt(main, this, "\n" + ChatColor.RED + "  There is already a reward with that ID, please change it and try again\n  Write anything to continue\n ");
+                            return new CommonPrompts.ErrorPrompt(this, "\n" + ChatColor.RED + "  There is already a reward with that ID, please change it and try again\n  Write anything to continue\n ");
                         }
                     } else {
-                        return new CommonPrompts.ErrorPrompt(main, this, "\n" + ChatColor.RED + "  You need to setup ID, PERMISSION, COMMAND and FIRST_TIME to save reward!\n  Write anything to continue\n ");
+                        return new CommonPrompts.ErrorPrompt(this, "\n" + ChatColor.RED + "  You need to setup ID, PERMISSION, COMMAND and FIRST_TIME to save reward!\n  Write anything to continue\n ");
                     }
                 case "7":
                     return new CommonPrompts.ConfirmExitPrompt(main, this);

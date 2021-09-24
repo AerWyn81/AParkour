@@ -15,9 +15,9 @@ CheckUpdates: true
 Language: EN
 
 
-# DATABASE DETAILS
+# DATABASE DETAILS (SQLITE, MYSQL, MARIADB)
 MySQL:
-    Enabled: false
+    Type: SQLITE
     Host: localhost
     Port: 3306
     User: root

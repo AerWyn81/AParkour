@@ -3,22 +3,33 @@ package me.davidml16.aparkour.database;
 import me.davidml16.aparkour.database.types.Database;
 
 import me.davidml16.aparkour.Main;
+import me.davidml16.aparkour.database.types.MariaDB;
 import me.davidml16.aparkour.database.types.MySQL;
 import me.davidml16.aparkour.database.types.SQLite;
+import me.davidml16.aparkour.enums.DatabaseType;
 import me.davidml16.aparkour.managers.ColorManager;
 
 public class DatabaseHandler {
 
 	private Database database;
 
-	private Main main;
+	private final Main main;
 
 	public DatabaseHandler(Main main) {
 		this.main = main;
-		if(main.getConfig().getBoolean("MySQL.Enabled")) {
-			database = new MySQL(main);
-		} else {
-			database = new SQLite(main);
+
+		DatabaseType databaseType = DatabaseType.valueOf(main.getConfig().getString("MySQL.Type", "NONE"));
+
+		switch (databaseType) {
+			case MYSQL:
+				database = new MySQL(main);
+				break;
+			case MARIADB:
+				database = new MariaDB(main);
+				break;
+			default:
+				database = new SQLite(main);
+				break;
 		}
 	}
 
@@ -33,5 +44,4 @@ public class DatabaseHandler {
 	}
 
 	public Database getDatabase() { return database; }
-
 }

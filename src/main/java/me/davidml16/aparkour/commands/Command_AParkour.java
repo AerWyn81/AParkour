@@ -1,7 +1,6 @@
 package me.davidml16.aparkour.commands;
 
 import me.davidml16.aparkour.Main;
-import me.davidml16.aparkour.api.events.ParkourCheckpointEvent;
 import me.davidml16.aparkour.api.events.ParkourReturnEvent;
 import me.davidml16.aparkour.data.LeaderboardEntry;
 import me.davidml16.aparkour.data.Parkour;
@@ -11,13 +10,10 @@ import me.davidml16.aparkour.handlers.ParkourHandler;
 import me.davidml16.aparkour.managers.ColorManager;
 import me.davidml16.aparkour.utils.ActionBar;
 import me.davidml16.aparkour.utils.MessageUtils;
-import me.davidml16.aparkour.utils.NBTEditor;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -28,7 +24,7 @@ import java.util.UUID;
 
 public class Command_AParkour implements CommandExecutor {
 
-    private Main main;
+    private final Main main;
     public Command_AParkour(Main main) {
         this.main = main;
     }

@@ -17,16 +17,16 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
-public class MySQL implements Database {
+public class MariaDB implements Database {
 
     private HikariDataSource hikari;
 
-    private String host, user, password, database;
-    private int port;
+    private final String host, user, password, database;
+    private final int port;
 
-    private Main main;
+    private final Main main;
 
-    public MySQL(Main main) {
+    public MariaDB(Main main) {
         this.main = main;
         this.host = main.getConfig().getString("MySQL.Host");
         this.user = main.getConfig().getString("MySQL.User");
@@ -48,20 +48,19 @@ public class MySQL implements Database {
 
         try {
             HikariConfig config = new HikariConfig();
-            config.setPoolName("    AParkour Pool MySQL");
-            config.setJdbcUrl("jdbc:mysql://" + this.host + ":" + this.port + "/" + this.database);
+            config.setPoolName("    AParkour Pool MariaDB");
+            config.setDataSourceClassName("org.mariadb.jdbc.MariaDbDataSource");
+            config.addDataSourceProperty("serverName", this.host);
+            config.addDataSourceProperty("port", port);
+            config.addDataSourceProperty("databaseName", this.database);
             config.setUsername(this.user);
             config.setPassword(this.password);
-            config.setMaximumPoolSize(75);
-            config.setMinimumIdle(4);
-            config.addDataSourceProperty("cachePrepStmts", "true");
-            config.addDataSourceProperty("prepStmtCacheSize", "250");
-            config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+
             hikari = new HikariDataSource(config);
 
-            Main.log.sendMessage(ColorManager.translate("    &aMySQL has been enabled!"));
+            Main.log.sendMessage(ColorManager.translate("    &aMariaDB has been enabled!"));
         } catch (HikariPool.PoolInitializationException e) {
-            Main.log.sendMessage(ColorManager.translate("    &cMySQL has an error on the conection! Now trying with SQLite..."));
+            Main.log.sendMessage(ColorManager.translate("    &cMariaDB has an error on the conection! Now trying with SQLite..."));
             main.getDatabase().changeToSQLite();
         }
     }

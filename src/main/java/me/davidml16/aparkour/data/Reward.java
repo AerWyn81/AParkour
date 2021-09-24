@@ -2,11 +2,11 @@ package me.davidml16.aparkour.data;
 
 public class Reward {
 
-    private String id;
-    private String permission;
-    private String command;
-    private boolean firstTime;
-    private int chance;
+    private final String id;
+    private final String permission;
+    private final String command;
+    private final boolean firstTime;
+    private final int chance;
 
     public Reward(String id, String permission, String command, boolean firstTime, int chance) {
         this.id = id;

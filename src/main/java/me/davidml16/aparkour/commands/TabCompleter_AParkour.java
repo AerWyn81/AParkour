@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import me.davidml16.aparkour.data.Parkour;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -15,7 +14,7 @@ import me.davidml16.aparkour.Main;
 
 public class TabCompleter_AParkour implements TabCompleter {
 
-	private Main main;
+	private final Main main;
 	public TabCompleter_AParkour(Main main) {
 		this.main = main;
 	}

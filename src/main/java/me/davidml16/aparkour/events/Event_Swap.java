@@ -7,7 +7,7 @@ import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 
 public class Event_Swap implements Listener {
 
-    private Main main;
+    private final Main main;
     public Event_Swap(Main main) {
         this.main = main;
     }

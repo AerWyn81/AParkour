@@ -17,7 +17,7 @@ public class PlayerDataHandler {
 
 	public HashMap<UUID, Profile> data = new HashMap<UUID, Profile>();
 
-	private Main main;
+	private final Main main;
 	public PlayerDataHandler(Main main) {
 		this.main = main;
 	}

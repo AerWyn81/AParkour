@@ -1,22 +1,13 @@
 package me.davidml16.aparkour.utils;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import me.davidml16.aparkour.Main;
-import me.davidml16.aparkour.data.Parkour;
 import me.davidml16.aparkour.managers.ColorManager;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
-
-import java.util.*;
-import java.util.stream.Collectors;
 
 public class LocationUtil {
 
-    private Main main;
+    private final Main main;
     public LocationUtil(Main main) {
         this.main = main;
     }

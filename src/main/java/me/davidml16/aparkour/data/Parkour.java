@@ -12,16 +12,16 @@ import org.bukkit.inventory.ItemStack;
 
 public class Parkour {
 
-    private Main main;
+    private final Main main;
 
-    private String id;
+    private final String id;
     private String name;
-    private Location spawn;
+    private final Location spawn;
 
     private ItemStack icon;
 
-    private Plate start;
-    private Plate end;
+    private final Plate start;
+    private final Plate end;
 
     private Location statsHologram;
     private Location topHologram;
@@ -50,10 +50,10 @@ public class Parkour {
         this.end = new Plate(end);
         this.statsHologram = statsHologram;
         this.topHologram = topHologram;
-        this.walkableBlocks = new ArrayList<WalkableBlock>();
-        this.rewards = new ArrayList<Reward>();
-        this.checkpoints = new ArrayList<Plate>();
-        this.checkpointLocations = new ArrayList<Location>();
+        this.walkableBlocks = new ArrayList<>();
+        this.rewards = new ArrayList<>();
+        this.checkpoints = new ArrayList<>();
+        this.checkpointLocations = new ArrayList<>();
         this.permissionRequired = false;
         this.permission = "";
         this.permissionMessage = "";

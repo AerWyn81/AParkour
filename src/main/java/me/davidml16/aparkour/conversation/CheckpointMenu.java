@@ -3,9 +3,7 @@ package me.davidml16.aparkour.conversation;
 import me.davidml16.aparkour.Main;
 import me.davidml16.aparkour.data.Parkour;
 import me.davidml16.aparkour.data.Plate;
-import me.davidml16.aparkour.data.Reward;
 import me.davidml16.aparkour.managers.ColorManager;
-import me.davidml16.aparkour.managers.PluginManager;
 import me.davidml16.aparkour.utils.Sounds;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -16,7 +14,7 @@ import org.bukkit.entity.Player;
 
 public class CheckpointMenu implements ConversationAbandonedListener, CommonPrompts {
 
-    private Main main;
+    private final Main main;
     public CheckpointMenu(Main main) {
         this.main = main;
     }
