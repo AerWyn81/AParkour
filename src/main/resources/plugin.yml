@@ -1,5 +1,5 @@
 name: AParkour
-version: ${project.version}
+version: 3.7.3
 author: DavidML16
 main: me.davidml16.aparkour.Main
 load: POSTWORLD
