@@ -6,8 +6,8 @@ import me.davidml16.aparkour.data.Parkour;
 import me.davidml16.aparkour.managers.ColorManager;
 import me.davidml16.aparkour.utils.ItemBuilder;
 import me.davidml16.aparkour.utils.Sounds;
+import me.davidml16.aparkour.utils.XMaterial;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -21,6 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 public class Miscellaneous_GUI implements Listener {
@@ -55,51 +56,10 @@ public class Miscellaneous_GUI implements Listener {
         if(guis.containsKey(id)) return;
 
         Inventory gui = Bukkit.createInventory(null, 45, main.getLanguageHandler().getMessage("GUIs.Misc.title").replaceAll("%parkour%", id));
-        ItemStack edge = new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 7).setName("").toItemStack();
-        ItemStack back = new ItemBuilder(Material.ARROW, 1).setName(ColorManager.translate("&aBack to config")).toItemStack();
+        ItemStack edge = new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack();
+        ItemStack back = new ItemBuilder(XMaterial.ARROW.parseItem()).setName(ColorManager.translate("&aBack to config")).toItemStack();
 
-        FileConfiguration config = main.getParkourHandler().getConfig(id);
-
-        gui.setItem(11, new ItemBuilder(Material.NAME_TAG, 1).setName(ColorManager.translate("&aParkour icon"))
-                .setLore(
-                        "",
-                        ColorManager.translate(" &7Click in a item of your "),
-                        ColorManager.translate(" &7inventory to set it "),
-                        ColorManager.translate(" &7to parkour icon. "),
-                        "",
-                        ColorManager.translate(" &7Click on the icon on gui "),
-                        ColorManager.translate(" &7to set to the default icon. "),
-                        ""
-                )
-                .toItemStack());
-
-        int itemID = Integer.parseInt(config.getString("parkour.icon").split(":")[0]);
-        byte itemData = Byte.parseByte(config.getString("parkour.icon").split(":")[1]);
-        String name = Material.getMaterial(itemID).name().replaceAll("_", " ");
-
-        if(itemID != 389) {
-            gui.setItem(20, new ItemBuilder(Material.getMaterial(itemID), 1, itemData).setName(ColorManager.translate("&a" + name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase())).setLore("", ColorManager.translate("&eClick to remove!")).toItemStack());
-        } else {
-            gui.setItem(20, new ItemBuilder(Material.getMaterial(itemID), 1, itemData).setName(ColorManager.translate("&c" + name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase())).setLore("", ColorManager.translate("&eDefault parkour icon!")).toItemStack());
-        }
-
-        gui.setItem(15, new ItemBuilder(Material.NAME_TAG, 1).setName(ColorManager.translate("&aParkour name"))
-                .setLore(
-                        "",
-                        ColorManager.translate(" &7Click on the anvil "),
-                        ColorManager.translate(" &7to start rename menu "),
-                        "",
-                        ColorManager.translate(" &7Choose 1 to rename parkour "),
-                        ColorManager.translate(" &7Choose 2 to save and exit menu. "),
-                        ""
-                )
-                .toItemStack());
-        gui.setItem(24,  new ItemBuilder(Material.ANVIL, 1)
-                .setName(ColorManager.translate("&aRename parkour"))
-                .setLore(
-                        "",
-                        ColorManager.translate("&eClick to rename parkour! ")
-                ).toItemStack());
+        buildInventory(id, gui);
 
         for (int i = 0; i < 45; i++) {
             if(gui.getItem(i) == null) {
@@ -112,18 +72,26 @@ public class Miscellaneous_GUI implements Listener {
         guis.put(id, gui);
     }
 
+    public void reloadGUI(String id) {
+        Inventory gui = guis.get(id);
+
+        buildInventory(id, gui);
+
+        for(HumanEntity pl : gui.getViewers()) {
+            pl.getOpenInventory().getTopInventory().setContents(gui.getContents());
+        }
+    }
+
     public void reloadAllGUI() {
         for(String id : main.getParkourHandler().getParkours().keySet()) {
             reloadGUI(id);
         }
     }
 
-    public void reloadGUI(String id) {
-        Inventory gui = guis.get(id);
-
+    private void buildInventory(String id, Inventory gui) {
         FileConfiguration config = main.getParkourHandler().getConfig(id);
 
-        gui.setItem(11, new ItemBuilder(Material.NAME_TAG, 1).setName(ColorManager.translate("&aParkour icon"))
+        gui.setItem(11, new ItemBuilder(XMaterial.NAME_TAG.parseItem()).setName(ColorManager.translate("&aParkour icon"))
                 .setLore(
                         "",
                         ColorManager.translate(" &7Click in a item of your "),
@@ -136,27 +104,26 @@ public class Miscellaneous_GUI implements Listener {
                 )
                 .toItemStack());
 
-        int itemID;
-        byte itemData;
-        String name;
+        String iconItemName = config.getString("parkour.icon");
+        Optional<XMaterial> optIconItem = XMaterial.matchXMaterial(iconItemName);
 
-        if(config.contains("parkour.icon")) {
-            itemID = Integer.parseInt(config.getString("parkour.icon").split(":")[0]);
-            itemData = Byte.parseByte(config.getString("parkour.icon").split(":")[1]);
-            name = Material.getMaterial(itemID).name().replaceAll("_", " ");
+        if (optIconItem.isPresent()) {
+            XMaterial iconItem = optIconItem.get();
+            String iconName = iconItem.name().replace("_", " ");
+
+            if (iconItem != XMaterial.ITEM_FRAME) {
+                gui.setItem(20, new ItemBuilder(iconItem.parseItem()).setName(ColorManager.translate("&a" + iconName.substring(0, 1).toUpperCase() + iconName.substring(1).toLowerCase())).setLore("", ColorManager.translate("&eClick to remove!")).toItemStack());
+            } else {
+                gui.setItem(20, new ItemBuilder(iconItem.parseItem()).setName(ColorManager.translate("&c" + iconName.substring(0, 1).toUpperCase() + iconName.substring(1).toLowerCase())).setLore("", ColorManager.translate("&eDefault parkour icon!")).toItemStack());
+            }
         } else {
-            itemID = 389;
-            itemData = 0;
-            name = Material.getMaterial(itemID).name().replaceAll("_", " ");
+            XMaterial iconItem = XMaterial.ITEM_FRAME;
+            String iconName = iconItem.name().replace("_", " ");
+
+            gui.setItem(20, new ItemBuilder(iconItem.parseItem()).setName(ColorManager.translate("&c" + iconName.substring(0, 1).toUpperCase() + iconName.substring(1).toLowerCase())).setLore("", ColorManager.translate("&eDefault parkour icon!")).toItemStack());
         }
 
-        if(itemID != 389) {
-            gui.setItem(20, new ItemBuilder(Material.getMaterial(itemID), 1, itemData).setName(ColorManager.translate("&a" + name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase())).setLore("", ColorManager.translate("&eClick to remove!")).toItemStack());
-        } else {
-            gui.setItem(20, new ItemBuilder(Material.getMaterial(itemID), 1, itemData).setName(ColorManager.translate("&c" + name.substring(0, 1).toUpperCase() + name.substring(1).toLowerCase())).setLore("", ColorManager.translate("&eDefault parkour icon!")).toItemStack());
-        }
-
-        gui.setItem(15, new ItemBuilder(Material.NAME_TAG, 1).setName(ColorManager.translate("&aParkour name"))
+        gui.setItem(15, new ItemBuilder(XMaterial.NAME_TAG.parseItem()).setName(ColorManager.translate("&aParkour name"))
                 .setLore(
                         "",
                         ColorManager.translate(" &7Click on the anvil "),
@@ -167,16 +134,12 @@ public class Miscellaneous_GUI implements Listener {
                         ""
                 )
                 .toItemStack());
-        gui.setItem(24,  new ItemBuilder(Material.ANVIL, 1)
+        gui.setItem(24,  new ItemBuilder(XMaterial.ANVIL.parseItem())
                 .setName(ColorManager.translate("&aRename parkour"))
                 .setLore(
                         "",
                         ColorManager.translate("&eClick to rename parkour! ")
                 ).toItemStack());
-
-        for(HumanEntity pl : gui.getViewers()) {
-            pl.getOpenInventory().getTopInventory().setContents(gui.getContents());
-        }
     }
 
     public void open(Player p, String id) {
@@ -187,13 +150,12 @@ public class Miscellaneous_GUI implements Listener {
         Bukkit.getScheduler().runTaskLater(main, () -> opened.put(p.getUniqueId(), id), 1L);
     }
 
-    @SuppressWarnings("deprecation")
     @EventHandler
     public void onInventoryClickEvent(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
 
         if (e.getCurrentItem() == null) return;
-        if (e.getCurrentItem().getType() == Material.AIR) return;
+        if (e.getCurrentItem().getType() == XMaterial.AIR.parseMaterial()) return;
 
         if (opened.containsKey(p.getUniqueId())) {
             e.setCancelled(true);
@@ -201,12 +163,12 @@ public class Miscellaneous_GUI implements Listener {
             String id = opened.get(p.getUniqueId());
 
             if (slot == 20) {
-                if (e.getCurrentItem().getType() != Material.ITEM_FRAME) {
+                if (e.getCurrentItem().getType() != XMaterial.ITEM_FRAME.parseMaterial()) {
                     FileConfiguration config = main.getParkourHandler().getConfig(id);
-                    config.set("parkour.icon", "389:0");
+                    config.set("parkour.icon", XMaterial.ITEM_FRAME.name());
                     p.sendMessage(ColorManager.translate(main.getLanguageHandler().getPrefix()
                             + " &cChanged icon of parkour &e" + id + " &cto default!"));
-                    main.getParkourHandler().getParkourById(id).setIcon(new ItemBuilder(Material.getMaterial(389), 1).setDurability((short) 0).toItemStack());
+                    main.getParkourHandler().getParkourById(id).setIcon(XMaterial.ITEM_FRAME.parseItem());
                     main.getParkourHandler().saveConfig(id);
                     Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 100, 3);
                     reloadGUI(id);
@@ -223,15 +185,14 @@ public class Miscellaneous_GUI implements Listener {
             } else if (slot == 40) {
                 main.getConfigGUI().open(p, id);
             } else if (slot >= 45 && slot <= 80) {
-                if (e.getCurrentItem().getType() == Material.AIR) return;
+                if (e.getCurrentItem().getType() == XMaterial.AIR.parseMaterial()) return;
 
                 FileConfiguration config = main.getParkourHandler().getConfig(id);
 
-                int itemID = e.getCurrentItem().getTypeId();
-                byte itemData = e.getCurrentItem().getData().getData();
+                ItemStack item = e.getCurrentItem();
 
-                config.set("parkour.icon", itemID + ":" + itemData);
-                main.getParkourHandler().getParkourById(id).setIcon(new ItemBuilder(Material.getMaterial(itemID), 1).setDurability(itemData).toItemStack());
+                config.set("parkour.icon", item.getType().name());
+                main.getParkourHandler().getParkourById(id).setIcon(item);
 
                 p.sendMessage(ColorManager.translate(main.getLanguageHandler().getPrefix()
                         + " &aChanged icon of parkour &e" + id + " &ato &e" + e.getCurrentItem().getType().name()));
@@ -248,5 +209,4 @@ public class Miscellaneous_GUI implements Listener {
         Player p = (Player) e.getPlayer();
         opened.remove(p.getUniqueId());
     }
-
 }

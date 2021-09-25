@@ -1,8 +1,8 @@
 package me.davidml16.aparkour.managers;
 
 import me.davidml16.aparkour.data.Parkour;
+import me.davidml16.aparkour.utils.XMaterial;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 
 public class PlateManager {
@@ -10,23 +10,23 @@ public class PlateManager {
     public void loadPlates(Parkour parkour) {
         try {
             Block start = parkour.getStart().getLocation().getWorld().getBlockAt(parkour.getStart().getLocation());
-            if (start.getType() != Material.IRON_PLATE) {
-                start.setType(Material.IRON_PLATE);
+            if (start.getType() != XMaterial.HEAVY_WEIGHTED_PRESSURE_PLATE.parseMaterial()) {
+                start.setType(XMaterial.HEAVY_WEIGHTED_PRESSURE_PLATE.parseMaterial());
             }
         } catch (NullPointerException ignored) {}
 
         try {
             Block end = parkour.getEnd().getLocation().getWorld().getBlockAt(parkour.getEnd().getLocation());
-            if(end.getType() != Material.GOLD_PLATE) {
-                end.setType(Material.GOLD_PLATE);
+            if(end.getType() != XMaterial.LIGHT_WEIGHTED_PRESSURE_PLATE.parseMaterial()) {
+                end.setType(XMaterial.LIGHT_WEIGHTED_PRESSURE_PLATE.parseMaterial());
             }
         } catch (NullPointerException ignored) {}
 
         for(Location checkpoint : parkour.getCheckpointLocations()) {
             Block cp = checkpoint.getWorld().getBlockAt(checkpoint);
             try {
-                if(cp.getType() != Material.IRON_PLATE) {
-                    cp.setType(Material.IRON_PLATE);
+                if(cp.getType() != XMaterial.HEAVY_WEIGHTED_PRESSURE_PLATE.parseMaterial()) {
+                    cp.setType(XMaterial.HEAVY_WEIGHTED_PRESSURE_PLATE.parseMaterial());
                 }
             } catch (NullPointerException ignored) {}
         }

@@ -3,10 +3,10 @@ package me.davidml16.aparkour.data;
 import java.util.*;
 
 import me.davidml16.aparkour.utils.ItemBuilder;
+import me.davidml16.aparkour.utils.XMaterial;
 import org.bukkit.Location;
 
 import me.davidml16.aparkour.Main;
-import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 
@@ -26,7 +26,7 @@ public class Parkour {
     private Location statsHologram;
     private Location topHologram;
 
-    private List<WalkableBlock> walkableBlocks;
+    private List<XMaterial> walkableBlocks;
     private List<Reward> rewards;
     private List<Plate> checkpoints;
     private List<Location> checkpointLocations;
@@ -60,7 +60,7 @@ public class Parkour {
         this.startTitleEnabled = false;
         this.endTitleEnabled = false;
         this.checkpointTitleEnabled = false;
-        this.icon = new ItemBuilder(Material.getMaterial(389), 1).toItemStack();
+        this.icon = XMaterial.ITEM_FRAME.parseItem();
         this.playing = new HashSet<>();
     }
 
@@ -94,11 +94,11 @@ public class Parkour {
 
     public void setTopHologram(Location topHologram) { this.topHologram = topHologram; }
 
-    public List<WalkableBlock> getWalkableBlocks() {
+    public List<XMaterial> getWalkableBlocks() {
         return walkableBlocks;
     }
 
-    public void setWalkableBlocks(List<WalkableBlock> walkableBlocks) {
+    public void setWalkableBlocks(List<XMaterial> walkableBlocks) {
         this.walkableBlocks = walkableBlocks;
     }
 

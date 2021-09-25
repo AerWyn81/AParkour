@@ -94,7 +94,12 @@ public class PlayerDataHandler {
 		data.setArmor(p.getInventory().getArmorContents());
 		data.setPotionEffects(p.getActivePotionEffects());
 		data.setLastGamemode(p.getGameMode());
-		data.setLeftHand(p.getInventory().getItemInOffHand());
+
+		// todo: Should be handle better, group this with a future VersionChecker
+		if (!Bukkit.getVersion().contains("1.8")) {
+			data.setLeftHand(p.getInventory().getItemInOffHand());
+		}
+
 		data.setLastFlyMode(p.isFlying() || p.getAllowFlight());
 
 		p.setGameMode(main.getParkourHandler().getParkourGamemode());
@@ -117,7 +122,11 @@ public class PlayerDataHandler {
 		p.getInventory().setChestplate(data.getArmor()[2]);
 		p.getInventory().setLeggings(data.getArmor()[1]);
 		p.getInventory().setBoots(data.getArmor()[0]);
-		p.getInventory().setItemInOffHand(data.getLeftHand());
+
+		// todo: Should be handle better, group this with a future VersionChecker
+		if (!Bukkit.getVersion().contains("1.8")) {
+			p.getInventory().setItemInOffHand(data.getLeftHand());
+		}
 
 		p.addPotionEffects(data.getPotionEffects());
 		if(data.getLastGamemode() != null) p.setGameMode(data.getLastGamemode());

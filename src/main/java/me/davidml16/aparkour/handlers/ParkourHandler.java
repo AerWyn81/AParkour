@@ -11,6 +11,7 @@ import me.davidml16.aparkour.api.events.ParkourStartEvent;
 import me.davidml16.aparkour.data.*;
 import me.davidml16.aparkour.utils.ItemBuilder;
 import me.davidml16.aparkour.utils.RandomFirework;
+import me.davidml16.aparkour.utils.XMaterial;
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -133,11 +134,11 @@ public class ParkourHandler {
 					Location topHologram = null;
 
 					if (main.isHologramsEnabled()) {
-						if ((Location) config.get("parkour.holograms.stats") != null) {
+						if (config.get("parkour.holograms.stats") != null) {
 							statsHologram = (Location) config.get("parkour.holograms.stats");
 						}
 
-						if ((Location) config.get("parkour.holograms.top") != null) {
+						if (config.get("parkour.holograms.top") != null) {
 							topHologram = (Location) config.get("parkour.holograms.top");
 						}
 					}
@@ -146,15 +147,14 @@ public class ParkourHandler {
 					parkours.put(id, parkour);
 
 					if (!config.contains("parkour.icon")) {
-						config.set("parkour.icon", "389:0");
+						config.set("parkour.icon", XMaterial.ITEM_FRAME.parseItem());
 					} else {
-						int itemID = Integer.parseInt(config.getString("parkour.icon").split(":")[0]);
-						byte itemData = Byte.parseByte(config.getString("parkour.icon").split(":")[1]);
-						parkour.setIcon(new ItemBuilder(Material.getMaterial(itemID), 1).setDurability(itemData).toItemStack());
+						String itemName = config.getString("parkour.icon");
+						parkour.setIcon(XMaterial.matchXMaterial(itemName).orElse(XMaterial.ITEM_FRAME).parseItem());
 					}
 
 					if (config.contains("parkour.walkableBlocks")) {
-						List<WalkableBlock> walkable = getWalkableBlocks(id);
+						List<XMaterial> walkable = getWalkableBlocks(id);
 						parkour.setWalkableBlocks(walkable);
 						saveWalkableBlocksString(id, walkable);
 					}
@@ -415,35 +415,39 @@ public class ParkourHandler {
 		return null;
 	}
 
-	public List<WalkableBlock> getWalkableBlocks(String id) {
-		List<WalkableBlock> walkable = new ArrayList<WalkableBlock>();
+	public List<XMaterial> getWalkableBlocks(String id) {
+		List<XMaterial> walkable = new ArrayList<>();
+
+		Optional<XMaterial> optXMaterial;
 		if(parkourConfigs.get(id).contains("parkour.walkableBlocks")) {
 			for (String block : parkourConfigs.get(id).getStringList("parkour.walkableBlocks")) {
-				String[] parts = block.split(":");
-				Material material = null;
-				material = Material.getMaterial(Integer.parseInt(parts[0]));
-				byte data = parts.length == 2 ? Byte.parseByte(parts[1]) : 0;
-				WalkableBlock walkableBlockk = new WalkableBlock(Integer.parseInt(parts[0]), data);
-				if (material != null && !walkable.contains(walkableBlockk)) {
-					walkable.add(walkableBlockk);
+				optXMaterial = XMaterial.matchXMaterial(block);
+
+				if (optXMaterial.isPresent()) {
+					XMaterial xMat = optXMaterial.get();
+
+					if (!walkable.contains(xMat)) {
+						walkable.add(xMat);
+					}
 				}
 			}
 		}
+
 		return walkable;
 	}
 
-	public List<String> getWalkableBlocksString(List<WalkableBlock> walkable) {
-		List<String> list = new ArrayList<String>();
-		for(WalkableBlock block : walkable) {
-			list.add(Material.getMaterial(block.getId()).getId() + ":" + block.getData());
+	public List<String> getWalkableBlocksString(List<XMaterial> walkable) {
+		List<String> list = new ArrayList<>();
+		for(XMaterial block : walkable) {
+			list.add(block.name());
 		}
 		return list;
 	}
 
-	public void saveWalkableBlocksString(String id, List<WalkableBlock> walkable) {
-		List<String> list = new ArrayList<String>();
-		for(WalkableBlock block : walkable) {
-			list.add(Material.getMaterial(block.getId()).getId() + ":" + block.getData());
+	public void saveWalkableBlocksString(String id, List<XMaterial> walkable) {
+		List<String> list = new ArrayList<>();
+		for(XMaterial block : walkable) {
+			list.add(block.name());
 		}
 
 		parkourConfigs.get(id).set("parkour.walkableBlocks", list);
@@ -451,7 +455,7 @@ public class ParkourHandler {
 	}
 
 	public List<Reward> getRewards(String id) {
-		List<Reward> rewards = new ArrayList<Reward>();
+		List<Reward> rewards = new ArrayList<>();
 		FileConfiguration config = parkourConfigs.get(id);
 		if (config.contains("parkour.rewards")) {
 			if (config.getConfigurationSection("parkour.rewards") != null) {

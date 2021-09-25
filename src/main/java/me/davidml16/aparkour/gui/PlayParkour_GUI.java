@@ -7,8 +7,8 @@ import me.davidml16.aparkour.managers.ColorManager;
 import me.davidml16.aparkour.utils.ItemBuilder;
 import me.davidml16.aparkour.utils.NBTEditor;
 import me.davidml16.aparkour.utils.Sounds;
+import me.davidml16.aparkour.utils.XMaterial;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -48,29 +48,29 @@ public class PlayParkour_GUI implements Listener {
 
 		Inventory gui = Bukkit.createInventory(null, 45, main.getLanguageHandler().getMessage("GUIs.Play.title"));
 
-		ItemStack edge = new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 7).setName("").toItemStack();
+		ItemStack edge = new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack();
 
 		for (Integer i : borders) {
 			gui.setItem(i, edge);
 		}
 
 		if (page > 0) {
-			gui.setItem(18, new ItemBuilder(Material.ENDER_PEARL, 1).setName(ColorManager.translate("&aPrevious page")).toItemStack());
+			gui.setItem(18, new ItemBuilder(XMaterial.ENDER_PEARL.parseItem()).setName(ColorManager.translate("&aPrevious page")).toItemStack());
 		} else {
-			gui.setItem(18, new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 7).setName("").toItemStack());
+			gui.setItem(18, new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack());
 		}
 
 		if (parkours.size() > (page + 1) * 21) {
-			gui.setItem(26, new ItemBuilder(Material.ENDER_PEARL, 1).setName(ColorManager.translate("&aNext page")).toItemStack());
+			gui.setItem(26, new ItemBuilder(XMaterial.ENDER_PEARL.parseItem()).setName(ColorManager.translate("&aNext page")).toItemStack());
 		} else {
-			gui.setItem(26, new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 7).setName("").toItemStack());
+			gui.setItem(26, new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack());
 		}
 
-		if (parkours.size() > 21) parkours = parkours.subList(page * 21, ((page * 21) + 21) > parkours.size() ? parkours.size() : (page * 21) + 21);
+		if (parkours.size() > 21) parkours = parkours.subList(page * 21, Math.min(((page * 21) + 21), parkours.size()));
 
 		if(parkours.size() > 0) {
 			for (Parkour parkour : parkours) {
-				List<String> lore = new ArrayList<String>();
+				List<String> lore = new ArrayList<>();
 				lore.add(" ");
 
 				lore.add(ColorManager.translate("  &fYour Last Time  "));
@@ -108,7 +108,7 @@ public class PlayParkour_GUI implements Listener {
 				gui.addItem(item);
 			}
 		} else {
-			gui.setItem(22, new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 14).setName(ColorManager.translate("&c")).toItemStack());
+			gui.setItem(22, new ItemBuilder(XMaterial.RED_STAINED_GLASS_PANE.parseItem()).setName(ColorManager.translate("&c")).toItemStack());
 		}
 
 		Bukkit.getScheduler().runTaskLater(main, () -> opened.put(p.getUniqueId(), page), 1L);
@@ -129,14 +129,14 @@ public class PlayParkour_GUI implements Listener {
 		Player p = (Player) e.getWhoClicked();
 
 		if (e.getCurrentItem() == null) return;
-		if (e.getCurrentItem().getType() == Material.AIR) return;
+		if (e.getCurrentItem().getType() == XMaterial.AIR.parseMaterial()) return;
 
 		if (opened.containsKey(p.getUniqueId())) {
 			e.setCancelled(true);
 			int slot = e.getRawSlot();
-			if (slot == 18 && e.getCurrentItem().getType() == Material.ENDER_PEARL) {
+			if (slot == 18 && e.getCurrentItem().getType() == XMaterial.ENDER_PEARL.parseMaterial()) {
 				openPage(p, opened.get(p.getUniqueId()) - 1);
-			} else if (slot == 26 && e.getCurrentItem().getType() == Material.ENDER_PEARL) {
+			} else if (slot == 26 && e.getCurrentItem().getType() == XMaterial.ENDER_PEARL.parseMaterial()) {
 				openPage(p, opened.get(p.getUniqueId()) + 1);
 			} else if ((slot >= 10 && slot <= 16) || (slot >= 19 && slot <= 25) || (slot >= 28 && slot <= 34)) {
 				Parkour parkour = main.getParkourHandler().getParkourById(NBTEditor.getString(e.getCurrentItem(), "parkourID"));
@@ -150,5 +150,4 @@ public class PlayParkour_GUI implements Listener {
 		Player p = (Player) e.getPlayer();
 		opened.remove(p.getUniqueId());
 	}
-
 }

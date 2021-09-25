@@ -6,8 +6,8 @@ import me.davidml16.aparkour.data.ParkourSession;
 import me.davidml16.aparkour.managers.ColorManager;
 import me.davidml16.aparkour.utils.ItemBuilder;
 import me.davidml16.aparkour.utils.Sounds;
+import me.davidml16.aparkour.utils.XMaterial;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -52,44 +52,27 @@ public class Confirmation_GUI implements Listener {
     public void loadGUI(String id) {
         if (guis.containsKey(id)) return;
 
+        ItemStack edge = new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack();
+
         Inventory gui = Bukkit.createInventory(null, 9, main.getLanguageHandler().getMessage("GUIs.Confirmation.title").replaceAll("%parkour%", id));
-
-        ItemStack edge = new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 7).setName("").toItemStack();
-
-        String materialName = main.getConfig().getString("GUIs.ConfirmationOnReset.Confirm.MaterialName");
-        String name = ColorManager.translate(main.getConfig().getString("GUIs.ConfirmationOnReset.Confirm.Name"));
-        String lore = ColorManager.translate(main.getConfig().getString("GUIs.ConfirmationOnReset.Confirm.Lore"));
-
-        ItemStack confirm;
-        if (materialName.contains(":")) {
-            String[] materialWithData = materialName.split(":");
-            confirm = new ItemBuilder(Material.getMaterial(materialWithData[0]), 1, (byte) Integer.parseInt(materialWithData[1])).setName(name).setLore(lore).toItemStack();
-        } else {
-            confirm = new ItemBuilder(Material.getMaterial(materialName), 1).setName(name).setLore(lore).toItemStack();
-        }
-
-        materialName = main.getConfig().getString("GUIs.ConfirmationOnReset.Cancel.MaterialName");
-        name = ColorManager.translate(main.getConfig().getString("GUIs.ConfirmationOnReset.Cancel.Name"));
-        lore = ColorManager.translate(main.getConfig().getString("GUIs.ConfirmationOnReset.Cancel.Lore"));
-
-        ItemStack cancel;
-        if (materialName.contains(":")) {
-            String[] materialWithData = materialName.split(":");
-            cancel = new ItemBuilder(Material.getMaterial(materialWithData[0]), 1, (byte) Integer.parseInt(materialWithData[1])).setName(name).setLore(lore).toItemStack();
-        } else {
-            cancel = new ItemBuilder(Material.getMaterial(materialName), 1).setName(name).setLore(lore).toItemStack();
-        }
-
-        gui.setItem(main.getConfig().getInt("GUIs.ConfirmationOnReset.Confirm.InventorySlot"), confirm);
-        gui.setItem(main.getConfig().getInt("GUIs.ConfirmationOnReset.Cancel.InventorySlot"), cancel);
+        buildInventory(gui);
 
         for (int i = 0; i < 9; i++) {
-            if(gui.getItem(i) == null) {
+            if (gui.getItem(i) == null) {
                 gui.setItem(i, edge);
             }
         }
 
         guis.put(id, gui);
+    }
+
+    public void reloadGUI(String id) {
+        Inventory gui = guis.get(id);
+        gui.clear();
+
+        buildInventory(gui);
+
+        guis.replace(id, gui);
     }
 
     public void reloadAllGUI() {
@@ -98,22 +81,17 @@ public class Confirmation_GUI implements Listener {
         }
     }
 
-    public void reloadGUI(String id) {
-        Inventory gui = guis.get(id);
-        gui.clear();
-
-        ItemStack edge = new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 7).setName("").toItemStack();
-
+    private void buildInventory(Inventory gui) {
         String materialName = main.getConfig().getString("GUIs.ConfirmationOnReset.Confirm.MaterialName");
         String name = ColorManager.translate(main.getConfig().getString("GUIs.ConfirmationOnReset.Confirm.Name"));
         String lore = ColorManager.translate(main.getConfig().getString("GUIs.ConfirmationOnReset.Confirm.Lore"));
 
         ItemStack confirm;
-        if (materialName.contains(":")) {
-            String[] materialWithData = materialName.split(":");
-            confirm = new ItemBuilder(Material.getMaterial(materialWithData[0]), 1, (byte) Integer.parseInt(materialWithData[1])).setName(name).setLore(lore).toItemStack();
-        } else {
-            confirm = new ItemBuilder(Material.getMaterial(materialName), 1).setName(name).setLore(lore).toItemStack();
+        try {
+            confirm = new ItemBuilder(XMaterial.matchXMaterial(materialName).get().parseItem()).setName(name).setLore(lore).toItemStack();
+        } catch (Exception e) {
+            confirm = new ItemBuilder(XMaterial.GREEN_WOOL.parseItem()).setName(name).setLore(lore).toItemStack();
+            Main.log.sendMessage(ColorManager.translate("&cCannot parse " + materialName + " for confirmation GUI. Using default item."));
         }
 
         materialName = main.getConfig().getString("GUIs.ConfirmationOnReset.Cancel.MaterialName");
@@ -121,23 +99,15 @@ public class Confirmation_GUI implements Listener {
         lore = ColorManager.translate(main.getConfig().getString("GUIs.ConfirmationOnReset.Cancel.Lore"));
 
         ItemStack cancel;
-        if (materialName.contains(":")) {
-            String[] materialWithData = materialName.split(":");
-            cancel = new ItemBuilder(Material.getMaterial(materialWithData[0]), 1, (byte) Integer.parseInt(materialWithData[1])).setName(name).setLore(lore).toItemStack();
-        } else {
-            cancel = new ItemBuilder(Material.getMaterial(materialName), 1).setName(name).setLore(lore).toItemStack();
+        try {
+            cancel = new ItemBuilder(XMaterial.matchXMaterial(materialName).get().parseItem()).setName(name).setLore(lore).toItemStack();
+        } catch (Exception e) {
+            cancel = new ItemBuilder(XMaterial.RED_WOOL.parseItem()).setName(name).setLore(lore).toItemStack();
+            Main.log.sendMessage(ColorManager.translate("&cCannot parse " + materialName + " for confirmation GUI. Using default item."));
         }
 
         gui.setItem(main.getConfig().getInt("GUIs.ConfirmationOnReset.Confirm.InventorySlot"), confirm);
         gui.setItem(main.getConfig().getInt("GUIs.ConfirmationOnReset.Cancel.InventorySlot"), cancel);
-
-        for (int i = 0; i < 9; i++) {
-            if(gui.getItem(i) == null) {
-                gui.setItem(i, edge);
-            }
-        }
-
-        guis.replace(id, gui);
     }
 
     public void open(Player p, String id) {
@@ -148,13 +118,12 @@ public class Confirmation_GUI implements Listener {
         Bukkit.getScheduler().runTaskLater(main, () -> opened.put(p.getUniqueId(), id), 1L);
     }
 
-    @SuppressWarnings("deprecation")
     @EventHandler
     public void onInventoryClickEvent(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
 
         if (e.getCurrentItem() == null) return;
-        if (e.getCurrentItem().getType() == Material.AIR) return;
+        if (e.getCurrentItem().getType() == XMaterial.AIR.parseMaterial()) return;
 
         if (opened.containsKey(p.getUniqueId())) {
             e.setCancelled(true);
@@ -183,6 +152,4 @@ public class Confirmation_GUI implements Listener {
         Player p = (Player) e.getPlayer();
         opened.remove(p.getUniqueId());
     }
-
-
 }

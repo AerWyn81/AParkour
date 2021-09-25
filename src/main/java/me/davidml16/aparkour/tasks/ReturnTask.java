@@ -5,9 +5,9 @@ import me.davidml16.aparkour.api.events.ParkourCheckpointEvent;
 import me.davidml16.aparkour.api.events.ParkourReturnEvent;
 import me.davidml16.aparkour.data.ParkourSession;
 import me.davidml16.aparkour.utils.WalkableBlocksUtil;
+import me.davidml16.aparkour.utils.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -22,7 +22,6 @@ public class ReturnTask {
     }
 
     class Task implements Runnable {
-        @SuppressWarnings("deprecation")
         @Override
         public void run() {
             for (Player p : Bukkit.getOnlinePlayers()) {
@@ -52,7 +51,7 @@ public class ReturnTask {
                     if (session.getParkour().getWalkableBlocks().size() != 0) {
                         Block block = p.getLocation().getY() % 1 == 0 ? p.getLocation().getBlock().getRelative(BlockFace.DOWN) : p.getLocation().getBlock();
 
-                        if ((WalkableBlocksUtil.noContainsWalkable(session.getParkour().getWalkableBlocks(), block.getType().getId(), block.getData()) && block.getType() != Material.IRON_PLATE && block.getType() != Material.GOLD_PLATE && block.getType() != Material.AIR)) {
+                        if ((WalkableBlocksUtil.containsWalkable(session.getParkour().getWalkableBlocks(), XMaterial.matchXMaterial(block.getType())) && block.getType() != XMaterial.HEAVY_WEIGHTED_PRESSURE_PLATE.parseMaterial() && block.getType() != XMaterial.LIGHT_WEIGHTED_PRESSURE_PLATE.parseMaterial() && block.getType() != XMaterial.AIR.parseMaterial())) {
                             Bukkit.getScheduler().scheduleSyncDelayedTask(main, () -> {
                                 if (main.getTimerManager().hasPlayerTimer(p)) {
 

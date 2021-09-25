@@ -5,9 +5,9 @@ import me.davidml16.aparkour.data.Parkour;
 import me.davidml16.aparkour.data.Plate;
 import me.davidml16.aparkour.managers.ColorManager;
 import me.davidml16.aparkour.utils.Sounds;
+import me.davidml16.aparkour.utils.XMaterial;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.conversations.*;
 import org.bukkit.entity.Player;
@@ -48,8 +48,8 @@ public class CheckpointMenu implements ConversationAbandonedListener, CommonProm
                         parkour.getCheckpointLocations().add(loc);
 
                         Block block = loc.getWorld().getBlockAt(loc);
-                        if(block.getType() != Material.IRON_PLATE) {
-                            block.setType(Material.IRON_PLATE);
+                        if(block.getType() != XMaterial.HEAVY_WEIGHTED_PRESSURE_PLATE.parseMaterial()) {
+                            block.setType(XMaterial.HEAVY_WEIGHTED_PRESSURE_PLATE.parseMaterial());
                         }
 
                         main.getParkourHandler().loadCheckpointHologram(parkour, checkpoint);
@@ -71,8 +71,8 @@ public class CheckpointMenu implements ConversationAbandonedListener, CommonProm
 
                         Location loc2 = parkour.getCheckpointLocations().get(parkour.getCheckpointLocations().size() - 1);
                         Block block = loc2.getWorld().getBlockAt(loc2);
-                        if(block.getType() == Material.IRON_PLATE) {
-                            block.setType(Material.AIR);
+                        if(block.getType() == XMaterial.HEAVY_WEIGHTED_PRESSURE_PLATE.parseMaterial()) {
+                            block.setType(XMaterial.AIR.parseMaterial());
                         }
 
                         parkour.getCheckpointLocations().remove(parkour.getCheckpointLocations().size() - 1);

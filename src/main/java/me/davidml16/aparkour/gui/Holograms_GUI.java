@@ -6,9 +6,9 @@ import me.davidml16.aparkour.data.Plate;
 import me.davidml16.aparkour.managers.ColorManager;
 import me.davidml16.aparkour.utils.ItemBuilder;
 import me.davidml16.aparkour.utils.Sounds;
+import me.davidml16.aparkour.utils.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -54,74 +54,14 @@ public class Holograms_GUI implements Listener {
         if(guis.containsKey(id)) return;
 
         Inventory gui = Bukkit.createInventory(null, 45, main.getLanguageHandler().getMessage("GUIs.Holograms.title").replaceAll("%parkour%", id));
-        ItemStack edge = new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 7).setName("").toItemStack();
-        ItemStack back = new ItemBuilder(Material.ARROW, 1).setName(ColorManager.translate("&aBack to config")).toItemStack();
+        ItemStack edge = new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack();
+        ItemStack back = new ItemBuilder(XMaterial.ARROW.parseItem()).setName(ColorManager.translate("&aBack to config")).toItemStack();
 
-        FileConfiguration config = main.getParkourHandler().getConfig(id);
+        buildInventory(id, gui);
 
-        if(config.contains("parkour.holograms.stats")) {
-            gui.setItem(10, new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 10).setName(ColorManager.translate("&a&l[+]")).toItemStack());
-            gui.setItem(19, new ItemBuilder(Material.ARMOR_STAND, 1).setName(ColorManager.translate("&aStats hologram location")).setLore("", ColorManager.translate("&eClick to remove location!")).toItemStack());
-        } else {
-            gui.setItem(10, new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 8).setName(ColorManager.translate("&c&l[-]")).toItemStack());
-            gui.setItem(19, new ItemBuilder(Material.ARMOR_STAND, 1).setName(ColorManager.translate("&cStats hologram location")).setLore("", ColorManager.translate("&eClick to set location!")).toItemStack());
-        }
-
-        if(config.contains("parkour.holograms.top")) {
-            gui.setItem(11, new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 10).setName(ColorManager.translate("&a&l[+]")).toItemStack());
-            gui.setItem(20, new ItemBuilder(Material.ARMOR_STAND, 1).setName(ColorManager.translate("&aTop hologram location")).setLore("", ColorManager.translate("&eClick to remove location!")).toItemStack());
-        } else {
-            gui.setItem(11, new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 8).setName(ColorManager.translate("&c&l[-]")).toItemStack());
-            gui.setItem(20, new ItemBuilder(Material.ARMOR_STAND, 1).setName(ColorManager.translate("&cTop hologram location")).setLore("", ColorManager.translate("&eClick to set location!")).toItemStack());
-        }
-
-        if(config.getBoolean("parkour.plateHolograms.start.enabled")) {
-            gui.setItem(23, new ItemBuilder(Material.ARMOR_STAND, 1).setName(ColorManager.translate("&aStart plate hologram")).setLore("", ColorManager.translate("&eClick to disable!")).toItemStack());
-        } else {
-            gui.setItem(23, new ItemBuilder(Material.ARMOR_STAND, 1).setName(ColorManager.translate("&cStart plate hologram")).setLore("", ColorManager.translate("&eClick to enable!")).toItemStack());
-        }
-
-        gui.setItem(14, new ItemBuilder(Material.NAME_TAG, 1).setName(ColorManager.translate("&aChange start hologram height"))
-                .setLore(
-                        "",
-                        ColorManager.translate(" &7Offset: &6" + config.getDouble("parkour.plateHolograms.start.distanceBelowPlate") + " blocks "),
-                        "",
-                        ColorManager.translate("&eLeft-Click to add 0.1 "),
-                        ColorManager.translate("&eRight-Click to subtract 0.1 ")
-                ).toItemStack());
-
-        if(config.getBoolean("parkour.plateHolograms.end.enabled")) {
-            gui.setItem(24, new ItemBuilder(Material.ARMOR_STAND, 1).setName(ColorManager.translate("&aEnd plate hologram")).setLore("", ColorManager.translate("&eClick to disable!")).toItemStack());
-        } else {
-            gui.setItem(24, new ItemBuilder(Material.ARMOR_STAND, 1).setName(ColorManager.translate("&cEnd plate hologram")).setLore("", ColorManager.translate("&eClick to enable!")).toItemStack());
-        }
-
-        gui.setItem(15, new ItemBuilder(Material.NAME_TAG, 1).setName(ColorManager.translate("&aChange end hologram height"))
-                .setLore(
-                        "",
-                        ColorManager.translate(" &7Offset: &6" + config.getDouble("parkour.plateHolograms.end.distanceBelowPlate") + " blocks "),
-                        "",
-                        ColorManager.translate("&eLeft-Click to add 0.1 "),
-                        ColorManager.translate("&eRight-Click to subtract 0.1 ")
-                ).toItemStack());
-
-        if(config.getBoolean("parkour.plateHolograms.checkpoints.enabled")) {
-            gui.setItem(25, new ItemBuilder(Material.ARMOR_STAND, 1).setName(ColorManager.translate("&aCheckpoint plate holograms")).setLore("", ColorManager.translate("&eClick to disable!")).toItemStack());
-        } else {
-            gui.setItem(25, new ItemBuilder(Material.ARMOR_STAND, 1).setName(ColorManager.translate("&cCheckpoint plate holograms")).setLore("", ColorManager.translate("&eClick to enable!")).toItemStack());
-        }
-
-        gui.setItem(16, new ItemBuilder(Material.NAME_TAG, 1).setName(ColorManager.translate("&aChange checkpoint hologram height"))
-                .setLore(
-                        "",
-                        ColorManager.translate(" &7Offset: &6" + config.getDouble("parkour.plateHolograms.checkpoints.distanceBelowPlate") + " blocks "),
-                        "",
-                        ColorManager.translate("&eLeft-Click to add 0.1 "),
-                        ColorManager.translate("&eRight-Click to subtract 0.1 ")
-                ).toItemStack());
-
-        gui.setItem(12, new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 14).setName(ColorManager.translate("&cComing soon")).toItemStack());
-        gui.setItem(21, new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 14).setName(ColorManager.translate("&cComing soon")).toItemStack());
+        gui.setItem(12, new ItemBuilder(XMaterial.RED_STAINED_GLASS_PANE.parseItem()).setName(ColorManager.translate("&cComing soon")).toItemStack());
+        gui.setItem(21, new ItemBuilder(XMaterial.RED_STAINED_GLASS_PANE.parseItem()).setName(ColorManager.translate("&cComing soon")).toItemStack());
+        gui.setItem(40, back);
 
         for (int i = 0; i < 45; i++) {
             if(gui.getItem(i) == null) {
@@ -129,9 +69,17 @@ public class Holograms_GUI implements Listener {
             }
         }
 
-        gui.setItem(40, back);
-
         guis.put(id, gui);
+    }
+
+    public void reloadGUI(String id) {
+        Inventory gui = guis.get(id);
+
+        buildInventory(id, gui);
+
+        for(HumanEntity pl : gui.getViewers()) {
+            pl.getOpenInventory().getTopInventory().setContents(gui.getContents());
+        }
     }
 
     public void reloadAllGUI() {
@@ -140,36 +88,32 @@ public class Holograms_GUI implements Listener {
         }
     }
 
-    public void reloadGUI(String id) {
-        Inventory gui = guis.get(id);
-
+    private void buildInventory(String id, Inventory gui) {
         FileConfiguration config = main.getParkourHandler().getConfig(id);
 
-        Parkour parkour = main.getParkourHandler().getParkourById(id);
-
         if(config.contains("parkour.holograms.stats")) {
-            gui.setItem(10, new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 10).setName(ColorManager.translate("&a&l[+]")).toItemStack());
-            gui.setItem(19, new ItemBuilder(Material.ARMOR_STAND, 1).setName(ColorManager.translate("&aStats hologram location")).setLore("", ColorManager.translate("&eClick to remove location!")).toItemStack());
+            gui.setItem(10, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(ColorManager.translate("&a&l[+]")).toItemStack());
+            gui.setItem(19, new ItemBuilder(XMaterial.ARMOR_STAND.parseItem()).setName(ColorManager.translate("&aStats hologram location")).setLore("", ColorManager.translate("&eClick to remove location!")).toItemStack());
         } else {
-            gui.setItem(10, new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 8).setName(ColorManager.translate("&c&l[-]")).toItemStack());
-            gui.setItem(19, new ItemBuilder(Material.ARMOR_STAND, 1).setName(ColorManager.translate("&cStats hologram location")).setLore("", ColorManager.translate("&eClick to set location!")).toItemStack());
+            gui.setItem(10, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(ColorManager.translate("&c&l[-]")).toItemStack());
+            gui.setItem(19, new ItemBuilder(XMaterial.ARMOR_STAND.parseItem()).setName(ColorManager.translate("&cStats hologram location")).setLore("", ColorManager.translate("&eClick to set location!")).toItemStack());
         }
 
         if(config.contains("parkour.holograms.top")) {
-            gui.setItem(11, new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 10).setName(ColorManager.translate("&a&l[+]")).toItemStack());
-            gui.setItem(20, new ItemBuilder(Material.ARMOR_STAND, 1).setName(ColorManager.translate("&aTop hologram location")).setLore("", ColorManager.translate("&eClick to remove location!")).toItemStack());
+            gui.setItem(11, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(ColorManager.translate("&a&l[+]")).toItemStack());
+            gui.setItem(20, new ItemBuilder(XMaterial.ARMOR_STAND.parseItem()).setName(ColorManager.translate("&aTop hologram location")).setLore("", ColorManager.translate("&eClick to remove location!")).toItemStack());
         } else {
-            gui.setItem(11, new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 8).setName(ColorManager.translate("&c&l[-]")).toItemStack());
-            gui.setItem(20, new ItemBuilder(Material.ARMOR_STAND, 1).setName(ColorManager.translate("&cTop hologram location")).setLore("", ColorManager.translate("&eClick to set location!")).toItemStack());
+            gui.setItem(11, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(ColorManager.translate("&c&l[-]")).toItemStack());
+            gui.setItem(20, new ItemBuilder(XMaterial.ARMOR_STAND.parseItem()).setName(ColorManager.translate("&cTop hologram location")).setLore("", ColorManager.translate("&eClick to set location!")).toItemStack());
         }
 
         if(config.getBoolean("parkour.plateHolograms.start.enabled")) {
-            gui.setItem(23, new ItemBuilder(Material.ARMOR_STAND, 1).setName(ColorManager.translate("&aStart plate hologram")).setLore("", ColorManager.translate("&eClick to disable!")).toItemStack());
+            gui.setItem(23, new ItemBuilder(XMaterial.ARMOR_STAND.parseItem()).setName(ColorManager.translate("&aStart plate hologram")).setLore("", ColorManager.translate("&eClick to disable!")).toItemStack());
         } else {
-            gui.setItem(23, new ItemBuilder(Material.ARMOR_STAND, 1).setName(ColorManager.translate("&cStart plate hologram")).setLore("", ColorManager.translate("&eClick to enable!")).toItemStack());
+            gui.setItem(23, new ItemBuilder(XMaterial.ARMOR_STAND.parseItem()).setName(ColorManager.translate("&cStart plate hologram")).setLore("", ColorManager.translate("&eClick to enable!")).toItemStack());
         }
 
-        gui.setItem(14, new ItemBuilder(Material.NAME_TAG, 1).setName(ColorManager.translate("&aChange start hologram height"))
+        gui.setItem(14, new ItemBuilder(XMaterial.NAME_TAG.parseItem()).setName(ColorManager.translate("&aChange start hologram height"))
                 .setLore(
                         "",
                         ColorManager.translate(" &7Offset: &6" + config.getDouble("parkour.plateHolograms.start.distanceBelowPlate") + " blocks "),
@@ -179,12 +123,12 @@ public class Holograms_GUI implements Listener {
                 ).toItemStack());
 
         if(config.getBoolean("parkour.plateHolograms.end.enabled")) {
-            gui.setItem(24, new ItemBuilder(Material.ARMOR_STAND, 1).setName(ColorManager.translate("&aEnd plate hologram")).setLore("", ColorManager.translate("&eClick to disable!")).toItemStack());
+            gui.setItem(24, new ItemBuilder(XMaterial.ARMOR_STAND.parseItem()).setName(ColorManager.translate("&aEnd plate hologram")).setLore("", ColorManager.translate("&eClick to disable!")).toItemStack());
         } else {
-            gui.setItem(24, new ItemBuilder(Material.ARMOR_STAND, 1).setName(ColorManager.translate("&cEnd plate hologram")).setLore("", ColorManager.translate("&eClick to enable!")).toItemStack());
+            gui.setItem(24, new ItemBuilder(XMaterial.ARMOR_STAND.parseItem()).setName(ColorManager.translate("&cEnd plate hologram")).setLore("", ColorManager.translate("&eClick to enable!")).toItemStack());
         }
 
-        gui.setItem(15, new ItemBuilder(Material.NAME_TAG, 1).setName(ColorManager.translate("&aChange end hologram height"))
+        gui.setItem(15, new ItemBuilder(XMaterial.NAME_TAG.parseItem()).setName(ColorManager.translate("&aChange end hologram height"))
                 .setLore(
                         "",
                         ColorManager.translate(" &7Offset: &6" + config.getDouble("parkour.plateHolograms.end.distanceBelowPlate") + " blocks "),
@@ -194,12 +138,12 @@ public class Holograms_GUI implements Listener {
                 ).toItemStack());
 
         if(config.getBoolean("parkour.plateHolograms.checkpoints.enabled")) {
-            gui.setItem(25, new ItemBuilder(Material.ARMOR_STAND, 1).setName(ColorManager.translate("&aCheckpoint plate holograms")).setLore("", ColorManager.translate("&eClick to disable!")).toItemStack());
+            gui.setItem(25, new ItemBuilder(XMaterial.ARMOR_STAND.parseItem()).setName(ColorManager.translate("&aCheckpoint plate holograms")).setLore("", ColorManager.translate("&eClick to disable!")).toItemStack());
         } else {
-            gui.setItem(25, new ItemBuilder(Material.ARMOR_STAND, 1).setName(ColorManager.translate("&cCheckpoint plate holograms")).setLore("", ColorManager.translate("&eClick to enable!")).toItemStack());
+            gui.setItem(25, new ItemBuilder(XMaterial.ARMOR_STAND.parseItem()).setName(ColorManager.translate("&cCheckpoint plate holograms")).setLore("", ColorManager.translate("&eClick to enable!")).toItemStack());
         }
 
-        gui.setItem(16, new ItemBuilder(Material.NAME_TAG, 1).setName(ColorManager.translate("&aChange checkpoint hologram height"))
+        gui.setItem(16, new ItemBuilder(XMaterial.NAME_TAG.parseItem()).setName(ColorManager.translate("&aChange checkpoint hologram height"))
                 .setLore(
                         "",
                         ColorManager.translate(" &7Offset: &6" + config.getDouble("parkour.plateHolograms.checkpoints.distanceBelowPlate") + " blocks "),
@@ -207,10 +151,6 @@ public class Holograms_GUI implements Listener {
                         ColorManager.translate("&eLeft-Click to add 0.1 "),
                         ColorManager.translate("&eRight-Click to subtract 0.1 ")
                 ).toItemStack());
-
-        for(HumanEntity pl : gui.getViewers()) {
-            pl.getOpenInventory().getTopInventory().setContents(gui.getContents());
-        }
     }
 
     public void open(Player p, String id) {
@@ -221,13 +161,12 @@ public class Holograms_GUI implements Listener {
         Bukkit.getScheduler().runTaskLater(main, () -> opened.put(p.getUniqueId(), id), 1L);
     }
 
-    @SuppressWarnings("deprecation")
     @EventHandler
     public void onInventoryClickEvent(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
 
         if (e.getCurrentItem() == null) return;
-        if (e.getCurrentItem().getType() == Material.AIR) return;
+        if (e.getCurrentItem().getType() == XMaterial.AIR.parseMaterial()) return;
 
         if (opened.containsKey(p.getUniqueId())) {
             e.setCancelled(true);
@@ -398,5 +337,4 @@ public class Holograms_GUI implements Listener {
         Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 100, 3);
         reloadGUI(id);
     }
-
 }

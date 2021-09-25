@@ -4,7 +4,6 @@ import me.davidml16.aparkour.Main;
 import me.davidml16.aparkour.data.PlayerState;
 import me.davidml16.aparkour.managers.ColorManager;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -33,30 +32,39 @@ public class ParkourItems {
         String materialName = main.getConfig().getString("Items.Restart.MaterialName");
         String name = ColorManager.translate(main.getConfig().getString("Items.Restart.Name"));
         String lore = ColorManager.translate(main.getConfig().getString("Items.Restart.Lore"));
-        returnItem = new ItemBuilder(Material.getMaterial(materialName), 1).setName(name).setLore(lore).toItemStack();
+
+        try {
+            returnItem = new ItemBuilder(XMaterial.matchXMaterial(materialName).get().parseItem()).setName(name).setLore(lore).toItemStack();
+        } catch (Exception e) {
+            returnItem = new ItemBuilder(XMaterial.BARRIER.parseItem()).setName(name).setLore(lore).toItemStack();
+            Main.log.sendMessage(ColorManager.translate("&cCannot parse " + materialName + " for return item. Using default item."));
+        }
     }
 
     public void loadCheckpointItem() {
         String materialName = main.getConfig().getString("Items.Checkpoint.MaterialName");
         String name = ColorManager.translate(main.getConfig().getString("Items.Checkpoint.Name"));
         String lore = ColorManager.translate(main.getConfig().getString("Items.Checkpoint.Lore"));
-        checkpointItem = new ItemBuilder(Material.getMaterial(materialName), 1).setName(name).setLore(lore).toItemStack();
+
+        try {
+            checkpointItem = new ItemBuilder(XMaterial.matchXMaterial(materialName).get().parseItem()).setName(name).setLore(lore).toItemStack();
+        } catch (Exception e) {
+            checkpointItem = new ItemBuilder(XMaterial.HEAVY_WEIGHTED_PRESSURE_PLATE.parseItem()).setName(name).setLore(lore).toItemStack();
+            Main.log.sendMessage(ColorManager.translate("&cCannot parse " + materialName + " for checkpoint item. Using default item."));
+        }
     }
 
     public void loadHideItem() {
-        Material hideMaterial;
-        String[] material = main.getConfig().getString("Items.HideItem.Hide.MaterialName", "INK_SACK:0").split(":");
-
-        if (material.length == 2) {
-            hideMaterial = Material.getMaterial(material[0]);
-            if (hideMaterial == null) hideMaterial = Material.INK_SACK;
-        } else {
-            hideMaterial = Material.INK_SACK;
-        }
-
+        String materialName = main.getConfig().getString("Items.HideItem.Hide.MaterialName");
         String name = ColorManager.translate(main.getConfig().getString("Items.HideItem.Hide.Name"));
         List<String> lore = main.getConfig().getStringList("Items.HideItem.Hide.Lore").stream().map(ColorManager::translate).collect(Collectors.toList());
-        hideItem = new ItemBuilder(hideMaterial, 1, (byte) Integer.parseInt(material[1])).setName(name).setLore(lore).toItemStack();
+
+        try {
+            hideItem = new ItemBuilder(XMaterial.matchXMaterial(materialName).get().parseItem()).setName(name).setLore(lore).toItemStack();
+        } catch (Exception e) {
+            hideItem = new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(name).setLore(lore).toItemStack();
+            Main.log.sendMessage(ColorManager.translate("&cCannot parse " + materialName + " for hide item. Using default item."));
+        }
 
         if (main.getConfig().getBoolean("Items.HideItem.Hide.Enchanted", false)) {
             hideItem.addUnsafeEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 1);
@@ -68,19 +76,16 @@ public class ParkourItems {
     }
 
     public void loadShowItem() {
-        Material showMaterial;
-        String[] material = main.getConfig().getString("Items.HideItem.Show.MaterialName", "INK_SACK:10").split(":");
-
-        if (material.length == 2) {
-            showMaterial = Material.getMaterial(material[0]);
-            if (showMaterial == null) showMaterial = Material.INK_SACK;
-        } else {
-            showMaterial = Material.INK_SACK;
-        }
-
+        String materialName = main.getConfig().getString("Items.HideItem.Show.MaterialName");
         String name = ColorManager.translate(main.getConfig().getString("Items.HideItem.Show.Name"));
         List<String> lore = main.getConfig().getStringList("Items.HideItem.Show.Lore").stream().map(ColorManager::translate).collect(Collectors.toList());
-        showItem = new ItemBuilder(showMaterial, 1, (byte) Integer.parseInt(material[1])).setName(name).setLore(lore).toItemStack();
+
+        try {
+            showItem = new ItemBuilder(XMaterial.matchXMaterial(materialName).get().parseItem()).setName(name).setLore(lore).toItemStack();
+        } catch (Exception e) {
+            showItem = new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(name).setLore(lore).toItemStack();
+            Main.log.sendMessage(ColorManager.translate("&cCannot parse " + materialName + " for show item. Using default item."));
+        }
 
         if (main.getConfig().getBoolean("Items.HideItem.Show.Enchanted", false)) {
             showItem.addUnsafeEnchantment(Enchantment.PROTECTION_ENVIRONMENTAL, 1);

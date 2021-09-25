@@ -10,8 +10,8 @@ import me.davidml16.aparkour.data.LeaderboardEntry;
 import me.davidml16.aparkour.managers.ColorManager;
 import me.davidml16.aparkour.utils.ItemBuilder;
 import me.davidml16.aparkour.utils.Sounds;
+import me.davidml16.aparkour.utils.XMaterial;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -52,23 +52,23 @@ public class PlayerStats_GUI implements Listener {
 
 		Inventory gui = Bukkit.createInventory(null, 45, ColorManager.translate(main.getLanguageHandler().getMessage("GUIs.Stats.title")));
 
-		ItemStack edge = new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 7).setName("").toItemStack();
-		ItemStack book = new ItemBuilder(Material.BOOK, 1).setName(ColorManager.translate(main.getLanguageHandler().getMessage("GUIs.Stats.playerStats").replaceAll("%player%", p.getName()))).toItemStack();
+		ItemStack edge = new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack();
+		ItemStack book = new ItemBuilder(XMaterial.BOOK.parseItem()).setName(ColorManager.translate(main.getLanguageHandler().getMessage("GUIs.Stats.playerStats").replaceAll("%player%", p.getName()))).toItemStack();
 
 		for (Integer i : borders) {
 			gui.setItem(i, edge);
 		}
 
 		if (page > 0) {
-			gui.setItem(18, new ItemBuilder(Material.ENDER_PEARL, 1).setName(ColorManager.translate(main.getLanguageHandler().getMessage("GUIs.Layout.Previous"))).toItemStack());
+			gui.setItem(18, new ItemBuilder(XMaterial.ENDER_PEARL.parseItem()).setName(ColorManager.translate(main.getLanguageHandler().getMessage("GUIs.Layout.Previous"))).toItemStack());
 		} else {
-			gui.setItem(18, new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 7).setName("").toItemStack());
+			gui.setItem(18, new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack());
 		}
 
 		if (parkours.size() > (page + 1) * 21) {
-			gui.setItem(26, new ItemBuilder(Material.ENDER_PEARL, 1).setName(ColorManager.translate(main.getLanguageHandler().getMessage("GUIs.Layout.Next"))).toItemStack());
+			gui.setItem(26, new ItemBuilder(XMaterial.ENDER_PEARL.parseItem()).setName(ColorManager.translate(main.getLanguageHandler().getMessage("GUIs.Layout.Next"))).toItemStack());
 		} else {
-			gui.setItem(26, new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 7).setName("").toItemStack());
+			gui.setItem(26, new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack());
 		}
 
 		gui.setItem(4, book);
@@ -112,7 +112,7 @@ public class PlayerStats_GUI implements Listener {
 				gui.addItem(new ItemBuilder(parkour.getIcon()).setName(ColorManager.translate(main.getLanguageHandler().getMessage("GUIs.Stats.parkourName").replaceAll("%parkourName%", parkour.getName()))).setLore(lore).toItemStack());
 			}
 		} else {
-			gui.setItem(22, new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 14).setName(ColorManager.translate("&c")).toItemStack());
+			gui.setItem(22, new ItemBuilder(XMaterial.RED_STAINED_GLASS_PANE.parseItem()).setName(ColorManager.translate("&c")).toItemStack());
 		}
 
 		Bukkit.getScheduler().runTaskLater(main, () -> opened.put(p.getUniqueId(), page), 1L);
@@ -133,14 +133,14 @@ public class PlayerStats_GUI implements Listener {
 		Player p = (Player) e.getWhoClicked();
 
 		if (e.getCurrentItem() == null) return;
-		if (e.getCurrentItem().getType() == Material.AIR) return;
+		if (e.getCurrentItem().getType() == XMaterial.AIR.parseMaterial()) return;
 
 		if (opened.containsKey(p.getUniqueId())) {
 			e.setCancelled(true);
 			int slot = e.getRawSlot();
-			if (slot == 18 && e.getCurrentItem().getType() == Material.ENDER_PEARL) {
+			if (slot == 18 && e.getCurrentItem().getType() == XMaterial.ENDER_PEARL.parseMaterial()) {
 				openPage(p, opened.get(p.getUniqueId()) - 1);
-			} else if (slot == 26 && e.getCurrentItem().getType() == Material.ENDER_PEARL) {
+			} else if (slot == 26 && e.getCurrentItem().getType() == XMaterial.ENDER_PEARL.parseMaterial()) {
 				openPage(p, opened.get(p.getUniqueId()) + 1);
 			}
 		}
@@ -151,5 +151,4 @@ public class PlayerStats_GUI implements Listener {
 		Player p = (Player) e.getPlayer();
 		opened.remove(p.getUniqueId());
 	}
-
 }

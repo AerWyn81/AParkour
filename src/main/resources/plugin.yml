@@ -1,7 +1,8 @@
 name: AParkour
-version: 3.7.3
+version: 3.7.4
 author: DavidML16
 main: me.davidml16.aparkour.Main
+api-version: 1.13
 load: POSTWORLD
 depend: [HolographicDisplays, ProtocolLib]
 softdepend: [PlaceholderAPI, Vault]

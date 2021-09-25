@@ -2,13 +2,9 @@ package me.davidml16.aparkour.conversation;
 
 import me.davidml16.aparkour.Main;
 import me.davidml16.aparkour.data.Parkour;
-import me.davidml16.aparkour.data.Plate;
 import me.davidml16.aparkour.managers.ColorManager;
 import me.davidml16.aparkour.utils.Sounds;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.conversations.*;
 import org.bukkit.entity.Player;
 

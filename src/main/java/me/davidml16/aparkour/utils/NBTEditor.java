@@ -15,7 +15,6 @@ import java.util.regex.Pattern;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
@@ -318,12 +317,7 @@ public final class NBTEditor {
      * An item stack with count of 1
      */
     public static ItemStack getHead( String skinURL ) {
-        Material material = Material.getMaterial( "SKULL_ITEM" );
-        if ( material == null ) {
-            // Most likely 1.13 materials
-            material = Material.getMaterial( "PLAYER_HEAD" );
-        }
-        ItemStack head = new ItemStack( material, 1, ( short ) 3 );
+        ItemStack head = XMaterial.PLAYER_HEAD.parseItem();
         if ( skinURL == null || skinURL.isEmpty() ) {
             return head;
         }

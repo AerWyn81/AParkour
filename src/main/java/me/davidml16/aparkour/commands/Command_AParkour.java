@@ -10,6 +10,7 @@ import me.davidml16.aparkour.handlers.ParkourHandler;
 import me.davidml16.aparkour.managers.ColorManager;
 import me.davidml16.aparkour.utils.ActionBar;
 import me.davidml16.aparkour.utils.MessageUtils;
+import me.davidml16.aparkour.utils.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -264,7 +265,7 @@ public class Command_AParkour implements CommandExecutor {
                 if(main.getParkourHandler().createParkour(id)) {
                     FileConfiguration config = main.getParkourHandler().getConfig(id);
                     config.set("parkour.name", args[2]);
-                    config.set("parkour.icon", "389:0");
+                    config.set("parkour.icon", XMaterial.ITEM_FRAME.name());
                     config.set("parkour.plateHolograms.start.enabled", false);
                     config.set("parkour.plateHolograms.start.distanceBelowPlate", 2.5D);
                     config.set("parkour.plateHolograms.end.enabled", false);

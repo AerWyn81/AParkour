@@ -8,6 +8,7 @@ import me.davidml16.aparkour.data.Reward;
 import me.davidml16.aparkour.managers.ColorManager;
 import me.davidml16.aparkour.utils.ItemBuilder;
 import me.davidml16.aparkour.utils.Sounds;
+import me.davidml16.aparkour.utils.XMaterial;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -55,9 +56,9 @@ public class Rewards_GUI implements Listener {
 
         Inventory gui = Bukkit.createInventory(null, 45, main.getLanguageHandler().getMessage("GUIs.Rewards.title").replaceAll("%parkour%", id));
 
-        ItemStack edge = new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 7).setName("").toItemStack();
-        ItemStack newReward = new ItemBuilder(Material.DOUBLE_PLANT, 1).setName(ColorManager.translate("&aCreate new reward")).toItemStack();
-        ItemStack back = new ItemBuilder(Material.ARROW, 1).setName(ColorManager.translate("&aBack to config")).toItemStack();
+        ItemStack edge = new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack();
+        ItemStack newReward = new ItemBuilder(XMaterial.SUNFLOWER.parseItem()).setName(ColorManager.translate("&aCreate new reward")).toItemStack();
+        ItemStack back = new ItemBuilder(XMaterial.ARROW.parseItem()).setName(ColorManager.translate("&aBack to config")).toItemStack();
 
         for (Integer i : borders) {
             gui.setItem(i, edge);
@@ -103,22 +104,22 @@ public class Rewards_GUI implements Listener {
             gui.setItem(i, null);
 
         if (page > 0) {
-            gui.setItem(18, new ItemBuilder(Material.ENDER_PEARL, 1).setName(ColorManager.translate("&aPrevious page")).toItemStack());
+            gui.setItem(18, new ItemBuilder(XMaterial.ENDER_PEARL.parseItem()).setName(ColorManager.translate("&aPrevious page")).toItemStack());
         } else {
-            gui.setItem(18, new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 7).setName("").toItemStack());
+            gui.setItem(18, new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack());
         }
 
         if (rewards.size() > (page + 1) * 21) {
-            gui.setItem(26, new ItemBuilder(Material.ENDER_PEARL, 1).setName(ColorManager.translate("&aNext page")).toItemStack());
+            gui.setItem(26, new ItemBuilder(XMaterial.ENDER_PEARL.parseItem()).setName(ColorManager.translate("&aNext page")).toItemStack());
         } else {
-            gui.setItem(26, new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 7).setName("").toItemStack());
+            gui.setItem(26, new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack());
         }
 
-        if (rewards.size() > 21) rewards = rewards.subList(page * 21, ((page * 21) + 21) > rewards.size() ? rewards.size() : (page * 21) + 21);
+        if (rewards.size() > 21) rewards = rewards.subList(page * 21, Math.min(((page * 21) + 21), rewards.size()));
 
         if(rewards.size() > 0) {
             for (Reward reward : rewards) {
-                gui.addItem(new ItemBuilder(Material.GOLD_NUGGET, 1)
+                gui.addItem(new ItemBuilder(XMaterial.GOLD_NUGGET.parseMaterial(), 1)
                         .setName(ColorManager.translate("&a" + reward.getId()))
                         .setLore(
                                 "",
@@ -130,7 +131,7 @@ public class Rewards_GUI implements Listener {
                                 ColorManager.translate("&eClick to remove! ")).toItemStack());
             }
         } else {
-            gui.setItem(22, new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 14).setName(ColorManager.translate("&cAny rewards selected")).setLore(
+            gui.setItem(22, new ItemBuilder(XMaterial.RED_STAINED_GLASS_PANE.parseItem()).setName(ColorManager.translate("&cAny rewards selected")).setLore(
                     "",
                     ColorManager.translate(" &7You dont have any "),
                     ColorManager.translate(" &7reward selected. "),
@@ -154,23 +155,22 @@ public class Rewards_GUI implements Listener {
         Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
     }
 
-    @SuppressWarnings("deprecation")
     @EventHandler
     public void onInventoryClickEvent(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
 
         if (e.getCurrentItem() == null) return;
-        if (e.getCurrentItem().getType() == Material.AIR) return;
+        if (e.getCurrentItem().getType() == XMaterial.AIR.parseMaterial()) return;
 
         if (opened.containsKey(p.getUniqueId())) {
             e.setCancelled(true);
             int slot = e.getRawSlot();
             String id = opened.get(p.getUniqueId()).getParkour();
             Parkour parkour = main.getParkourHandler().getParkourById(opened.get(p.getUniqueId()).getParkour());
-            if (slot == 18 && e.getCurrentItem().getType() == Material.ENDER_PEARL) {
+            if (slot == 18 && e.getCurrentItem().getType() == XMaterial.ENDER_PEARL.parseMaterial()) {
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
                 openPage(p, id, opened.get(p.getUniqueId()).getPage() - 1);
-            } else if (slot == 26 && e.getCurrentItem().getType() == Material.ENDER_PEARL) {
+            } else if (slot == 26 && e.getCurrentItem().getType() == XMaterial.ENDER_PEARL.parseMaterial()) {
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
                 openPage(p, id, opened.get(p.getUniqueId()).getPage() + 1);
             } else if (slot == 39) {
@@ -180,7 +180,7 @@ public class Rewards_GUI implements Listener {
             } else if (slot == 41) {
                 main.getConfigGUI().open(p, parkour.getId());
             } else if ((slot >= 10 && slot <= 16) || (slot >= 19 && slot <= 25) || (slot >= 28 && slot <= 34)) {
-                if (e.getCurrentItem().getType() == Material.AIR) return;
+                if (e.getCurrentItem().getType() == XMaterial.AIR.parseMaterial()) return;
 
                 if (parkour.getRewards().size() == 0) return;
 
@@ -207,5 +207,4 @@ public class Rewards_GUI implements Listener {
             opened.remove(p.getUniqueId());
         }
     }
-
 }

@@ -6,9 +6,9 @@ import me.davidml16.aparkour.data.Parkour;
 import me.davidml16.aparkour.data.ParkourSession;
 import me.davidml16.aparkour.data.Plate;
 import me.davidml16.aparkour.utils.Sounds;
+import me.davidml16.aparkour.utils.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -30,7 +30,7 @@ public class Event_PlateCheckpoint implements Listener {
 		Action action = e.getAction();
 
 		if (action == Action.PHYSICAL) {
-			if (e.getClickedBlock().getType() == Material.IRON_PLATE) {
+			if (e.getClickedBlock().getType() == XMaterial.HEAVY_WEIGHTED_PRESSURE_PLATE.parseMaterial()) {
 
 				Parkour parkour = main.getParkourHandler().getParkourByLocation(e.getClickedBlock().getLocation());
 
