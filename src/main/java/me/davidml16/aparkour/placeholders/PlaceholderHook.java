@@ -95,7 +95,7 @@ public class PlaceholderHook extends PlaceholderExpansion {
                 if (api.getParkoursIDs().contains(identifiers[1])) {
                     long time = api.getBestTime(player.getPlayer(), identifiers[1]);
                     if (time == 0) return "N/A";
-                    return "" + Math.floor(time / 1000);
+                    return "" + Math.floor(time / 1000F);
                 }
                 break;
             case "players":
