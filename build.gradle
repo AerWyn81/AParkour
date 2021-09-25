@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'me.davidml16'
-version = '3.7.2'
+version = '3.7.3'
 description = 'AParkour'
 sourceCompatibility = '1.8'
 
