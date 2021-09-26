@@ -3,6 +3,7 @@ package me.davidml16.aparkour.gui;
 import me.davidml16.aparkour.Main;
 import me.davidml16.aparkour.api.events.ParkourReturnEvent;
 import me.davidml16.aparkour.data.ParkourSession;
+import me.davidml16.aparkour.handlers.ParkourHandler;
 import me.davidml16.aparkour.managers.ColorManager;
 import me.davidml16.aparkour.utils.ItemBuilder;
 import me.davidml16.aparkour.utils.Sounds;
@@ -130,17 +131,7 @@ public class Confirmation_GUI implements Listener {
             int slot = e.getRawSlot();
             if (slot == main.getConfig().getInt("GUIs.ConfirmationOnReset.Confirm.InventorySlot")) {
                 p.closeInventory();
-                ParkourSession session = main.getSessionHandler().getSession(p);
-                p.teleport(session.getParkour().getSpawn());
-
-                String message = main.getLanguageHandler().getMessage("Messages.Leave").replaceAll("%parkourName%", session.getParkour().getName());
-                if (message.length() > 0)
-                    p.sendMessage(message);
-
-                main.getParkourHandler().resetPlayer(p);
-                main.getSoundUtil().playReturn(p);
-
-                Bukkit.getPluginManager().callEvent(new ParkourReturnEvent(p, session.getParkour()));
+                ParkourHandler.restartPlayerParkour(p);
             } else if (slot == main.getConfig().getInt("GUIs.ConfirmationOnReset.Cancel.InventorySlot")) {
                 p.closeInventory();
             }

@@ -155,6 +155,7 @@ Sounds:
 # CONFIRMATION MENU ON PARKOUR RESET
 GUIs:
     ConfirmationOnReset:
+        Enabled: false
         Confirm:
             MaterialName: 'CONCRETE:5'
             Name: '&a&lConfirm'

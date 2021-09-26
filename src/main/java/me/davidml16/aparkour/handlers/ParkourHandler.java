@@ -7,6 +7,7 @@ import java.util.*;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import me.davidml16.aparkour.api.events.ParkourEndEvent;
+import me.davidml16.aparkour.api.events.ParkourReturnEvent;
 import me.davidml16.aparkour.api.events.ParkourStartEvent;
 import me.davidml16.aparkour.data.*;
 import me.davidml16.aparkour.utils.ItemBuilder;
@@ -646,5 +647,20 @@ public class ParkourHandler {
 		main.getStatsHologramManager().reloadStatsHologram(p, parkour.getId());
 
 		Bukkit.getPluginManager().callEvent(new ParkourEndEvent(p, parkour));
+	}
+
+	public static void restartPlayerParkour(Player p) {
+		ParkourSession session = main.getSessionHandler().getSession(p);
+
+		p.teleport(session.getParkour().getSpawn());
+
+		String message = main.getLanguageHandler().getMessage("Messages.Leave").replaceAll("%parkourName%", session.getParkour().getName());
+		if (message.length() > 0)
+			p.sendMessage(message);
+
+		main.getParkourHandler().resetPlayer(p);
+		main.getSoundUtil().playReturn(p);
+
+		Bukkit.getPluginManager().callEvent(new ParkourReturnEvent(p, session.getParkour()));
 	}
 }
