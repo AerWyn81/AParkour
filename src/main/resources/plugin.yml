@@ -1,11 +1,10 @@
 name: AParkour
-version: 3.7.6
+version: 3.7.7
 author: DavidML16
 main: me.davidml16.aparkour.Main
 api-version: 1.13
 load: POSTWORLD
-depend: [HolographicDisplays, ProtocolLib]
-softdepend: [PlaceholderAPI, Vault]
+softdepend: [PlaceholderAPI, Vault, HolographicDisplays, ProtocolLib]
 commands:
     aparkour:
         description: Use this to see all commands.
