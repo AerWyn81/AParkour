@@ -86,8 +86,8 @@ ReturnOnFall:
 ActionBarTimer:
     Enabled: true
 
-# ENABLE AUTO RESTART
-AutoRestart:
+# RESTART THE PARKOUR SESSION WHEN THE PLAYER COMES BACK OVER THE START
+FastRestart:
     Enabled: true
 
 # HIDE ITEM COOLDOWN (-1 to disable)

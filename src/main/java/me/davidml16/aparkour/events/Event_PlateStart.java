@@ -58,7 +58,7 @@ public class Event_PlateStart implements Listener {
                             }
                         }
 
-                        if (main.getConfig().getBoolean("AutoRestart.Enabled")) {
+                        if (main.getConfig().getBoolean("FastRestart.Enabled")) {
                             if (!ironPlateResetDenyCooldown.containsKey(p)) {
                                 ironPlateResetDenyCooldown.put(p, System.currentTimeMillis() + 1500);
 
