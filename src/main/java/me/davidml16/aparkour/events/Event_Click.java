@@ -28,8 +28,6 @@ public class Event_Click implements Listener {
         if (e.getAction() != Action.RIGHT_CLICK_AIR && e.getAction() != Action.RIGHT_CLICK_BLOCK)
             return;
 
-        e.setCancelled(true);
-
         ItemStack itemOnHand;
         Player p = e.getPlayer();
 
@@ -47,8 +45,10 @@ public class Event_Click implements Listener {
         if (itemOnHand == null) {
             return;
         }
-
+        
         if (main.getTimerManager().hasPlayerTimer(p)) {
+            e.setCancelled(true);
+
             boolean isPlayerParkouring = main.getSessionHandler().getSession(p) != null;
 
             if (isPlayerParkouring && itemOnHand.equals(main.getParkourItems().getRestartItem())) {
