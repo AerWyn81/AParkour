@@ -1,5 +1,7 @@
 package me.davidml16.aparkour.handlers;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -12,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import me.davidml16.aparkour.data.Profile;
+import org.bukkit.potion.PotionEffect;
 
 public class PlayerDataHandler {
 
@@ -106,6 +109,9 @@ public class PlayerDataHandler {
 		p.getInventory().clear();
 		p.getInventory().setArmorContents(null);
 		p.updateInventory();
+
+		Collection<PotionEffect> pPotionsEffects = Collections.synchronizedCollection(p.getActivePotionEffects());
+		pPotionsEffects.stream().map(PotionEffect::getType).forEach(p::removePotionEffect);
 	}
 
 	public void restorePlayerInventory(Player p) {
